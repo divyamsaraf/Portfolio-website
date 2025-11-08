@@ -60,15 +60,65 @@ export default function SkillsSection() {
     );
   }
 
+  // Group skills by category
+  const skillsByCategory = skills.reduce(
+    (acc, skill) => {
+      const category = skill.category || "Other";
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(skill);
+      return acc;
+    },
+    {} as Record<string, typeof skills>
+  );
+
+  const categories = Object.keys(skillsByCategory).sort();
+
   return (
     <motion.section
-      className="max-w-5xl mx-auto py-20 px-4 flex flex-wrap gap-3 justify-center"
+      className="max-w-5xl mx-auto py-20 px-4 space-y-12"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      {skills.map((skill) => (
-        <SkillBadge key={skill.id} {...skill} />
+      {categories.map((category, categoryIdx) => (
+        <motion.div
+          key={category}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: categoryIdx * 0.1 }}
+        >
+          <motion.h3
+            className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ delay: categoryIdx * 0.1 + 0.1 }}
+          >
+            <span className="w-1 h-6 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full" />
+            {category}
+          </motion.h3>
+          <motion.div
+            className="flex flex-wrap gap-4 justify-start"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: categoryIdx * 0.1 + 0.2 }}
+          >
+            {skillsByCategory[category].map((skill, skillIdx) => (
+              <motion.div
+                key={skill.id}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: categoryIdx * 0.1 + 0.2 + skillIdx * 0.05 }}
+              >
+                <SkillBadge {...skill} />
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
       ))}
     </motion.section>
   );

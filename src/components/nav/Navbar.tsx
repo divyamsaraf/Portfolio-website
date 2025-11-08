@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import SocialLinks from "../SocialLinks";
+import { NAV_ITEMS } from "../../constants";
 
 interface NavbarProps {
   theme: "light" | "dark";
@@ -10,14 +12,7 @@ interface NavbarProps {
 export default function Navbar({ theme, toggleTheme }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/experience", label: "Experience" },
-    { href: "/skills", label: "Skills" },
-    { href: "/projects", label: "Projects" },
-    { href: "/resume", label: "Resume" },
-  ];
+  const navItems = NAV_ITEMS;
 
   const containerVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -70,6 +65,10 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
             </Link>
           </motion.div>
         ))}
+
+        <motion.div variants={itemVariants} className="flex items-center gap-4 pl-4 border-l border-gray-200 dark:border-gray-700">
+          <SocialLinks size="md" />
+        </motion.div>
 
         <motion.div variants={itemVariants}>
           <Link

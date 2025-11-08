@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { motion } from "framer-motion";
+import SocialLinks from "../SocialLinks";
 import type { Hero as HeroType } from "../../lib/types";
 
 const DEFAULT_HERO: HeroType = {
@@ -126,6 +127,17 @@ export default function Hero() {
           >
             Resume
           </motion.a>
+        </motion.div>
+
+        {/* Social Links */}
+        <motion.div
+          className="mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
+        >
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Connect with me</p>
+          <SocialLinks size="lg" />
         </motion.div>
       </div>
     </motion.section>
