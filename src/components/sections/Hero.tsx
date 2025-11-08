@@ -25,7 +25,11 @@ export default function Hero() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
-  const roles = (hero as any)?.roles || DEFAULT_ROLES;
+
+  // Get roles from hero data, ensuring it's an array
+  const roles = Array.isArray(hero?.roles) && hero.roles.length > 0
+    ? hero.roles
+    : DEFAULT_ROLES;
 
   useEffect(() => {
     const fetchHero = async () => {

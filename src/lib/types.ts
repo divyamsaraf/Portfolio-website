@@ -11,6 +11,7 @@ export interface Hero {
   id?: ID;
   title: string;
   subtitle: string;
+  roles?: string[];
   cta_github: string;
   cta_resume: string;
   created_at?: string;
@@ -37,6 +38,7 @@ export interface Experience {
   start_date: string;
   end_date?: string | null;
   description: string;
+  achievements?: string[];
   bullets?: string[];
   tech?: string[];
   location?: string;

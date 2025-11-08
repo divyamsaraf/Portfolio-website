@@ -10,6 +10,7 @@ export default function ExperienceCard({
   end_date,
   description,
   bullets,
+  achievements,
   location,
 }: ExperienceCardProps) {
   const duration = end_date ? `${start_date} - ${end_date}` : `${start_date} - Present`;
@@ -92,15 +93,15 @@ export default function ExperienceCard({
         {description}
       </motion.p>
 
-      {/* Bullets */}
-      {bullets && bullets.length > 0 && (
+      {/* Achievements/Bullets */}
+      {(bullets && bullets.length > 0 || (achievements && achievements.length > 0)) && (
         <motion.ul
           className="space-y-2 text-gray-700 dark:text-gray-300"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.25 }}
         >
-          {bullets.map((bullet, idx) => (
+          {(bullets || achievements || []).map((item, idx) => (
             <motion.li
               key={idx}
               className="text-sm flex gap-3"
@@ -109,7 +110,7 @@ export default function ExperienceCard({
               transition={{ delay: 0.25 + idx * 0.05 }}
             >
               <span className="text-blue-600 dark:text-blue-400 font-bold flex-shrink-0">•</span>
-              <span>{bullet}</span>
+              <span>{item}</span>
             </motion.li>
           ))}
         </motion.ul>

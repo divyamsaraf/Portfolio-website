@@ -137,10 +137,10 @@ export default function ProjectsGrid() {
                 />
               </motion.div>
             )}
-            <h3 className="font-bold text-xl mb-2 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">{project.title}</h3>
-            <p className="text-gray-700 dark:text-gray-300 mb-3 text-sm">{project.description}</p>
+            <h3 className="font-bold text-xl mb-2 text-gray-100 dark:text-white group-hover:text-blue-300 dark:group-hover:text-blue-300 transition">{project.title}</h3>
+            <p className="text-gray-300 dark:text-gray-200 mb-3 text-sm">{project.description}</p>
             {project.long_description && (
-              <p className="text-gray-600 dark:text-gray-400 mb-3 text-xs line-clamp-2">{project.long_description}</p>
+              <p className="text-gray-400 dark:text-gray-300 mb-3 text-xs line-clamp-2">{project.long_description}</p>
             )}
             <div className="flex flex-wrap gap-2 mb-4">
               {project.tech_stack && Array.isArray(project.tech_stack) && project.tech_stack.map((tech, idx) => (
@@ -159,7 +159,7 @@ export default function ProjectsGrid() {
                   href={project.github_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-semibold transition"
+                  className="text-blue-300 dark:text-blue-300 hover:text-blue-200 dark:hover:text-blue-200 text-sm font-semibold transition"
                   whileHover={{ x: 2 }}
                 >
                   GitHub →
@@ -170,7 +170,7 @@ export default function ProjectsGrid() {
                   href={project.live_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 text-sm font-semibold transition"
+                  className="text-cyan-300 dark:text-cyan-300 hover:text-cyan-200 dark:hover:text-cyan-200 text-sm font-semibold transition"
                   whileHover={{ x: 2 }}
                 >
                   Live Demo →

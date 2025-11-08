@@ -3,6 +3,12 @@ import { supabase } from "../../lib/supabaseClient";
 import { motion } from "framer-motion";
 import type { Resume } from "../../lib/types";
 
+// Helper function to extract Google Drive file ID from URL
+function extractGoogleDriveId(url: string): string {
+  const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+  return match ? match[1] : "";
+}
+
 export default function ResumeSection() {
   const [resume, setResume] = useState<Resume | null>(null);
   const [loading, setLoading] = useState(true);
@@ -96,15 +102,37 @@ export default function ResumeSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <div className="aspect-video bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-              <div className="text-center">
-                <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-                <p className="text-gray-600 dark:text-gray-400">PDF Preview</p>
-                <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">{resume.file_name || "resume.pdf"}</p>
+            {resume.file_url.includes('drive.google.com') ? (
+              // Google Drive PDF
+              <div className="aspect-video bg-gray-100 dark:bg-gray-700">
+                <iframe
+                  src={`https://drive.google.com/file/d/${extractGoogleDriveId(resume.file_url)}/preview`}
+                  className="w-full h-full"
+                  allow="autoplay"
+                  title="Resume Preview"
+                />
               </div>
-            </div>
+            ) : resume.file_url.endsWith('.pdf') ? (
+              // Direct PDF file
+              <div className="aspect-video bg-gray-100 dark:bg-gray-700">
+                <iframe
+                  src={`${resume.file_url}#toolbar=0`}
+                  className="w-full h-full"
+                  title="Resume Preview"
+                />
+              </div>
+            ) : (
+              // Fallback
+              <div className="aspect-video bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                <div className="text-center">
+                  <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                  <p className="text-gray-600 dark:text-gray-400">PDF Preview</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">{resume.file_name || "resume.pdf"}</p>
+                </div>
+              </div>
+            )}
           </motion.div>
 
           {/* Info */}
