@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosWithAuth from "../../../lib/axiosClient";
 import { motion } from "framer-motion";
 import type { Project } from "../../../lib/types";
 
@@ -26,7 +26,7 @@ export default function ProjectsForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get<Project[]>("/api/admin/projects");
+        const { data } = await axiosWithAuth.get<Project[]>("/api/admin/projects");
         if (data) {
           setProjects(data);
         }
@@ -56,7 +56,7 @@ export default function ProjectsForm() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await axios.post("/api/admin/projects", { projects });
+      await axiosWithAuth.post("/api/admin/projects", { projects });
       alert("Projects updated successfully!");
     } catch (err) {
       console.error("Failed to save projects:", err);

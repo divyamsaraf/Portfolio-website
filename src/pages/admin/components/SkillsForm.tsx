@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosWithAuth from "../../../lib/axiosClient";
 import { motion } from "framer-motion";
 import type { Skill } from "../../../lib/types";
 
@@ -19,7 +19,7 @@ export default function SkillsForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get<Skill[]>("/api/admin/skills");
+        const { data } = await axiosWithAuth.get<Skill[]>("/api/admin/skills");
         if (data) {
           setSkills(data);
         }
@@ -49,7 +49,7 @@ export default function SkillsForm() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await axios.post("/api/admin/skills", { skills });
+      await axiosWithAuth.post("/api/admin/skills", { skills });
       alert("Skills updated successfully!");
     } catch (err) {
       console.error("Failed to save skills:", err);

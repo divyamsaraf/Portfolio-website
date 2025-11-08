@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosWithAuth from "../../../lib/axiosClient";
 import { motion } from "framer-motion";
 
 export default function ResumeForm() {
@@ -22,7 +22,7 @@ export default function ResumeForm() {
       const formData = new FormData();
       formData.append("file", file);
 
-      await axios.post("/api/admin/uploadResume", formData, {
+      await axiosWithAuth.post("/api/admin/uploadResume", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Resume uploaded successfully!");

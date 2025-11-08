@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosWithAuth from "../../../lib/axiosClient";
 import { motion } from "framer-motion";
 import type { About } from "../../../lib/types";
 
@@ -11,7 +11,7 @@ export default function AboutForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get<About>("/api/admin/about");
+        const { data } = await axiosWithAuth.get<About>("/api/admin/about");
         if (data) {
           setAbout(data);
         }
@@ -27,7 +27,7 @@ export default function AboutForm() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await axios.post("/api/admin/about", about);
+      await axiosWithAuth.post("/api/admin/about", about);
       alert("About section updated successfully!");
     } catch (err) {
       console.error("Failed to save about:", err);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosWithAuth from "../../../lib/axiosClient";
 import { motion } from "framer-motion";
 import type { Experience } from "../../../lib/types";
 
@@ -23,7 +23,7 @@ export default function ExperienceForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get<Experience[]>("/api/admin/experience");
+        const { data } = await axiosWithAuth.get<Experience[]>("/api/admin/experience");
         if (data) {
           setExperiences(data);
         }
@@ -53,7 +53,7 @@ export default function ExperienceForm() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await axios.post("/api/admin/experience", { experiences });
+      await axiosWithAuth.post("/api/admin/experience", { experiences });
       alert("Experience updated successfully!");
     } catch (err) {
       console.error("Failed to save experiences:", err);

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "../../../lib/supabaseClient";
+import { requireAdminAuth } from "../../../lib/adminAuth";
 import type { Skill } from "../../../lib/types";
 
 export default async function handler(
@@ -9,6 +10,12 @@ export default async function handler(
   const { method } = req;
 
   try {
+    // POST requests require admin auth
+    if (method === "POST") {
+      const isAdmin = await requireAdminAuth(req, res);
+      if (!isAdmin) return;
+    }
+
     switch (method) {
       case "GET":
         const { data, error: getError } = await supabase

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "../../../lib/supabaseClient";
+import { requireAdminAuth } from "../../../lib/adminAuth";
 import formidable from "formidable";
 import fs from "fs";
 
@@ -12,6 +13,10 @@ export default async function handler(
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
+
+  // Require admin auth for POST
+  const isAdmin = await requireAdminAuth(req, res);
+  if (!isAdmin) return;
 
   try {
     const form = formidable({ multiples: false });
