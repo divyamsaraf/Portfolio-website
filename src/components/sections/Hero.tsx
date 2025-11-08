@@ -13,16 +13,23 @@ const DEFAULT_HERO: HeroType = {
 export default function Hero() {
   const [hero, setHero] = useState<HeroType>(DEFAULT_HERO);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchHero = async () => {
       try {
-        const { data, error } = await supabase.from("hero").select("*").single();
-        if (!error && data) {
+        setError(null);
+        const { data, error: supabaseError } = await supabase.from("hero").select("*").single();
+        if (supabaseError) {
+          console.warn("Failed to fetch hero from Supabase, using defaults:", supabaseError);
+          setHero(DEFAULT_HERO);
+        } else if (data) {
           setHero(data);
         }
       } catch (err) {
         console.error("Failed to fetch hero:", err);
+        setError("Failed to load hero section");
+        setHero(DEFAULT_HERO);
       } finally {
         setLoading(false);
       }
@@ -38,6 +45,21 @@ export default function Hero() {
         animate={{ opacity: 1 }}
       >
         <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+      </motion.section>
+    );
+  }
+
+  if (error) {
+    return (
+      <motion.section
+        className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <div className="text-center">
+          <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
+          <p className="text-gray-500 dark:text-gray-400">Showing default content</p>
+        </div>
       </motion.section>
     );
   }

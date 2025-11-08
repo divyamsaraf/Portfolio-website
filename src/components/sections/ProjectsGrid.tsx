@@ -6,19 +6,27 @@ import type { Project } from "../../lib/types";
 export default function ProjectsGrid() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const { data, error } = await supabase
+        setError(null);
+        const { data, error: supabaseError } = await supabase
           .from("projects")
           .select("*")
           .order("date", { ascending: false });
-        if (!error && data) {
+        if (supabaseError) {
+          console.error("Failed to fetch projects:", supabaseError);
+          setError("Failed to load projects");
+          setProjects([]);
+        } else if (data) {
           setProjects(data);
         }
       } catch (err) {
         console.error("Failed to fetch projects:", err);
+        setError("An error occurred while loading projects");
+        setProjects([]);
       } finally {
         setLoading(false);
       }
@@ -30,6 +38,15 @@ export default function ProjectsGrid() {
     return (
       <motion.section className="max-w-6xl mx-auto py-20 px-4 text-center">
         <p className="text-gray-500 dark:text-gray-400">Loading projects...</p>
+      </motion.section>
+    );
+  }
+
+  if (error) {
+    return (
+      <motion.section className="max-w-6xl mx-auto py-20 px-4 text-center">
+        <p className="text-red-600 dark:text-red-400 mb-2">{error}</p>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">Please try refreshing the page</p>
       </motion.section>
     );
   }

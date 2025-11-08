@@ -7,19 +7,27 @@ import type { Skill } from "../../lib/types";
 export default function SkillsSection() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const { data, error } = await supabase
+        setError(null);
+        const { data, error: supabaseError } = await supabase
           .from("skills")
           .select("*")
           .order("name", { ascending: true });
-        if (!error && data) {
+        if (supabaseError) {
+          console.error("Failed to fetch skills:", supabaseError);
+          setError("Failed to load skills");
+          setSkills([]);
+        } else if (data) {
           setSkills(data);
         }
       } catch (err) {
         console.error("Failed to fetch skills:", err);
+        setError("An error occurred while loading skills");
+        setSkills([]);
       } finally {
         setLoading(false);
       }
@@ -31,6 +39,15 @@ export default function SkillsSection() {
     return (
       <motion.section className="max-w-5xl mx-auto py-20 px-4 text-center">
         <p className="text-gray-500 dark:text-gray-400">Loading skills...</p>
+      </motion.section>
+    );
+  }
+
+  if (error) {
+    return (
+      <motion.section className="max-w-5xl mx-auto py-20 px-4 text-center">
+        <p className="text-red-600 dark:text-red-400 mb-2">{error}</p>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">Please try refreshing the page</p>
       </motion.section>
     );
   }

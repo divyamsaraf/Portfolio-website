@@ -10,16 +10,23 @@ const DEFAULT_ABOUT: About = {
 export default function AboutSection() {
   const [about, setAbout] = useState<About>(DEFAULT_ABOUT);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAbout = async () => {
       try {
-        const { data, error } = await supabase.from("about").select("*").single();
-        if (!error && data) {
+        setError(null);
+        const { data, error: supabaseError } = await supabase.from("about").select("*").single();
+        if (supabaseError) {
+          console.warn("Failed to fetch about from Supabase, using defaults:", supabaseError);
+          setAbout(DEFAULT_ABOUT);
+        } else if (data) {
           setAbout(data);
         }
       } catch (err) {
         console.error("Failed to fetch about:", err);
+        setError("Failed to load about section");
+        setAbout(DEFAULT_ABOUT);
       } finally {
         setLoading(false);
       }
@@ -31,6 +38,15 @@ export default function AboutSection() {
     return (
       <motion.section className="max-w-3xl mx-auto py-20 px-4 text-center">
         <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+      </motion.section>
+    );
+  }
+
+  if (error) {
+    return (
+      <motion.section className="max-w-3xl mx-auto py-20 px-4 text-center">
+        <p className="text-red-600 dark:text-red-400 mb-2">{error}</p>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">Showing default content</p>
       </motion.section>
     );
   }
