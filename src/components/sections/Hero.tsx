@@ -66,50 +66,68 @@ export default function Hero() {
 
   return (
     <motion.section
-      className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-32 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
+      className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-32 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <motion.h1
-        className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-6"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.6 }}
-      >
-        {hero.title}
-      </motion.h1>
-      <motion.p
-        className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mb-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.6 }}
-      >
-        {hero.subtitle}
-      </motion.p>
+      {/* Animated background elements */}
       <motion.div
-        className="flex flex-col sm:flex-row gap-4 justify-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 0.6 }}
-      >
-        <a
-          href={hero.cta_github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-8 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
+        className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10"
+        animate={{ y: [0, 50, 0], x: [0, 30, 0] }}
+        transition={{ duration: 8, repeat: Infinity }}
+      />
+      <motion.div
+        className="absolute bottom-20 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10"
+        animate={{ y: [0, -50, 0], x: [0, -30, 0] }}
+        transition={{ duration: 8, repeat: Infinity, delay: 2 }}
+      />
+
+      <div className="relative z-10">
+        <motion.h1
+          className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
         >
-          GitHub
-        </a>
-        <a
-          href={hero.cta_resume}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-8 py-3 rounded-lg border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          {hero.title}
+        </motion.h1>
+        <motion.p
+          className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mb-8 leading-relaxed"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
         >
-          Resume
-        </a>
-      </motion.div>
+          {hero.subtitle}
+        </motion.p>
+        <motion.div
+          className="flex flex-col sm:flex-row gap-4 justify-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+        >
+          <motion.a
+            href={hero.cta_github}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05, boxShadow: "0 20px 25px -5px rgba(37, 99, 235, 0.3)" }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold hover:shadow-lg transition-all"
+          >
+            GitHub
+          </motion.a>
+          <motion.a
+            href={hero.cta_resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-3 rounded-lg border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+          >
+            Resume
+          </motion.a>
+        </motion.div>
+      </div>
     </motion.section>
   );
 }
