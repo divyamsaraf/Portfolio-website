@@ -7,41 +7,52 @@ import ContactForm from "../components/ContactForm";
 
 export default function Home() {
   return (
-    <main className="bg-gray-50 dark:bg-gray-900 transition-colors">
+    <main className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 dark:bg-gradient-to-b dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 transition-colors">
+      {/* Animated background elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+      </div>
+
       <Hero />
-      <section id="about" className="py-20 px-6 bg-white dark:bg-gray-800 scroll-mt-20">
+
+      <section id="about" className="relative py-20 px-6 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">
+          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
             About
           </h2>
           <AboutSection />
         </div>
       </section>
-      <section id="experience" className="py-20 px-6 bg-gray-50 dark:bg-gray-900 scroll-mt-20">
+
+      <section id="experience" className="relative py-20 px-6 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">
+          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
             Experience
           </h2>
           <ExperienceSection />
         </div>
       </section>
-      <section id="skills" className="py-20 px-6 bg-white dark:bg-gray-800 scroll-mt-20">
+
+      <section id="skills" className="relative py-20 px-6 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">
+          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
             Skills
           </h2>
           <SkillsSection />
         </div>
       </section>
-      <section id="projects" className="py-20 px-6 bg-gray-50 dark:bg-gray-900 scroll-mt-20">
+
+      <section id="projects" className="relative py-20 px-6 scroll-mt-20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">
+          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
             Projects
           </h2>
           <ProjectsGrid />
         </div>
       </section>
-      <section id="contact" className="py-20 px-6 bg-white dark:bg-gray-800 scroll-mt-20">
+
+      <section id="contact" className="relative py-20 px-6 scroll-mt-20">
         <ContactForm showTitle={true} />
       </section>
     </main>

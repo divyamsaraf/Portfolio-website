@@ -86,62 +86,71 @@ export default function Hero() {
 
   return (
     <motion.section
-      className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-32 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden"
+      className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-32 relative overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      {/* Animated background elements */}
+      {/* Premium animated background elements */}
       <motion.div
-        className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10"
+        className="absolute top-20 left-10 w-96 h-96 bg-blue-500 rounded-full mix-blend-screen filter blur-3xl opacity-20"
         animate={{ y: [0, 50, 0], x: [0, 30, 0] }}
         transition={{ duration: 8, repeat: Infinity }}
       />
       <motion.div
-        className="absolute bottom-20 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10"
+        className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-20"
         animate={{ y: [0, -50, 0], x: [0, -30, 0] }}
         transition={{ duration: 8, repeat: Infinity, delay: 2 }}
       />
+      <motion.div
+        className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-screen filter blur-3xl opacity-10"
+        animate={{ y: [0, -30, 0], x: [0, 50, 0] }}
+        transition={{ duration: 10, repeat: Infinity, delay: 1 }}
+      />
 
       <div className="relative z-10">
+        {/* Main Title */}
         <motion.h1
-          className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent"
-          initial={{ opacity: 0, y: -30 }}
+          className="text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent drop-shadow-2xl"
+          initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
           {hero.title}
         </motion.h1>
 
-        {/* Rotating Roles */}
+        {/* Rotating Roles with Premium Styling */}
         <motion.div
-          className="h-12 md:h-16 flex items-center justify-center mb-8"
+          className="h-16 md:h-20 flex items-center justify-center mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
           <motion.div
             key={currentRoleIndex}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
           >
             {roles[currentRoleIndex]}
           </motion.div>
         </motion.div>
 
+        {/* Subtitle */}
         <motion.p
-          className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mb-8 leading-relaxed"
+          className="text-lg md:text-xl text-gray-300 max-w-3xl mb-12 leading-relaxed font-light"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
           {hero.subtitle}
         </motion.p>
+
+        {/* CTA Buttons */}
         <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-6 justify-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
@@ -150,21 +159,21 @@ export default function Hero() {
             href={hero.cta_github}
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={{ scale: 1.05, boxShadow: "0 20px 25px -5px rgba(37, 99, 235, 0.3)" }}
+            whileHover={{ scale: 1.08, boxShadow: "0 0 30px rgba(59, 130, 246, 0.6)" }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold hover:shadow-lg transition-all"
+            className="px-10 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold hover:shadow-2xl transition-all backdrop-blur-sm border border-blue-400/30"
           >
-            GitHub
+            ✨ GitHub
           </motion.a>
           <motion.a
             href={hero.cta_resume}
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={{ scale: 1.05, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+            whileHover={{ scale: 1.08, boxShadow: "0 0 30px rgba(147, 51, 234, 0.6)" }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 rounded-lg border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+            className="px-10 py-4 rounded-xl border-2 border-purple-500/50 text-white font-bold hover:bg-purple-500/10 transition-all backdrop-blur-sm"
           >
-            Resume
+            📄 Resume
           </motion.a>
         </motion.div>
 
@@ -175,8 +184,17 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Connect with me</p>
+          <p className="text-sm text-gray-400 mb-6 font-medium tracking-widest uppercase">Connect with me</p>
           <SocialLinks size="lg" />
+        </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <div className="text-gray-400 text-2xl">↓</div>
         </motion.div>
       </div>
     </motion.section>

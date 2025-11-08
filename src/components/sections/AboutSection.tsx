@@ -70,22 +70,27 @@ export default function AboutSection() {
       </motion.h2>
 
       <motion.div
-        className="relative p-8 md:p-12 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border border-blue-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-shadow"
+        className="relative p-8 md:p-12 rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-blue-500/20 shadow-2xl hover:shadow-blue-500/20 transition-all backdrop-blur-xl"
         initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.2, duration: 0.6 }}
       >
-        {/* Decorative elements */}
+        {/* Premium decorative elements */}
         <motion.div
-          className="absolute top-0 right-0 w-32 h-32 bg-blue-200 dark:bg-blue-900 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -z-10"
-          animate={{ y: [0, 20, 0] }}
-          transition={{ duration: 4, repeat: Infinity }}
+          className="absolute top-0 right-0 w-40 h-40 bg-blue-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 -z-10"
+          animate={{ y: [0, 30, 0], x: [0, 20, 0] }}
+          transition={{ duration: 6, repeat: Infinity }}
         />
         <motion.div
-          className="absolute bottom-0 left-0 w-32 h-32 bg-purple-200 dark:bg-purple-900 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -z-10"
-          animate={{ y: [0, -20, 0] }}
-          transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+          className="absolute bottom-0 left-0 w-40 h-40 bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 -z-10"
+          animate={{ y: [0, -30, 0], x: [0, -20, 0] }}
+          transition={{ duration: 6, repeat: Infinity, delay: 1 }}
+        />
+        <motion.div
+          className="absolute top-1/2 right-1/4 w-32 h-32 bg-cyan-500 rounded-full mix-blend-screen filter blur-3xl opacity-10 -z-10"
+          animate={{ y: [0, 20, 0] }}
+          transition={{ duration: 8, repeat: Infinity, delay: 2 }}
         />
 
         <motion.div
@@ -99,7 +104,7 @@ export default function AboutSection() {
         </motion.div>
 
         <motion.p
-          className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 relative z-10"
+          className="text-lg leading-relaxed text-gray-300 relative z-10 font-light"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -108,34 +113,34 @@ export default function AboutSection() {
           {about.content}
         </motion.p>
 
-        {/* Highlight stats or key points */}
+        {/* Premium stats section */}
         <motion.div
-          className="mt-8 pt-8 border-t border-blue-200 dark:border-gray-700 grid grid-cols-3 gap-4"
+          className="mt-12 pt-12 border-t border-blue-500/20 grid grid-cols-3 gap-6"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
         >
           <motion.div
-            className="text-center"
-            whileHover={{ scale: 1.05 }}
+            className="text-center p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 hover:border-blue-500/50 transition-all"
+            whileHover={{ scale: 1.08, boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)" }}
           >
-            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">3+</p>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Years Experience</p>
+            <p className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">3+</p>
+            <p className="text-sm text-gray-400 mt-2">Years Experience</p>
           </motion.div>
           <motion.div
-            className="text-center"
-            whileHover={{ scale: 1.05 }}
+            className="text-center p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 hover:border-purple-500/50 transition-all"
+            whileHover={{ scale: 1.08, boxShadow: "0 0 20px rgba(147, 51, 234, 0.3)" }}
           >
-            <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">10+</p>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Projects Completed</p>
+            <p className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-purple-500 bg-clip-text text-transparent">10+</p>
+            <p className="text-sm text-gray-400 mt-2">Projects Completed</p>
           </motion.div>
           <motion.div
-            className="text-center"
-            whileHover={{ scale: 1.05 }}
+            className="text-center p-4 rounded-xl bg-gradient-to-br from-cyan-500/10 to-cyan-600/5 border border-cyan-500/20 hover:border-cyan-500/50 transition-all"
+            whileHover={{ scale: 1.08, boxShadow: "0 0 20px rgba(34, 211, 238, 0.3)" }}
           >
-            <p className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">20+</p>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Technologies</p>
+            <p className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-cyan-500 bg-clip-text text-transparent">20+</p>
+            <p className="text-sm text-gray-400 mt-2">Technologies</p>
           </motion.div>
         </motion.div>
       </motion.div>

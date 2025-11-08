@@ -110,16 +110,16 @@ export default function ProjectsGrid() {
       {projects.map((project, idx) => (
         <motion.div
           key={project.id}
-          className="group relative p-6 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg hover:shadow-2xl transition-all overflow-hidden"
-          whileHover={{ scale: 1.05, y: -8 }}
+          className="group relative p-6 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-blue-500/20 rounded-xl shadow-xl hover:shadow-2xl transition-all overflow-hidden backdrop-blur-xl"
+          whileHover={{ scale: 1.08, y: -12 }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: idx * 0.1 }}
         >
-          {/* Gradient overlay on hover */}
+          {/* Premium gradient overlay on hover */}
           <motion.div
-            className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+            className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
             initial={{ opacity: 0 }}
             whileHover={{ opacity: 1 }}
           />
@@ -143,11 +143,11 @@ export default function ProjectsGrid() {
               <p className="text-gray-600 dark:text-gray-400 mb-3 text-xs line-clamp-2">{project.long_description}</p>
             )}
             <div className="flex flex-wrap gap-2 mb-4">
-              {project.tech_stack.map((tech, idx) => (
+              {project.tech_stack && Array.isArray(project.tech_stack) && project.tech_stack.map((tech, idx) => (
                 <motion.span
                   key={idx}
-                  className="px-2 py-1 text-xs bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 text-blue-800 dark:text-blue-200 rounded-full"
-                  whileHover={{ scale: 1.1 }}
+                  className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 rounded-full border border-blue-500/30 hover:border-blue-500/60 transition-all"
+                  whileHover={{ scale: 1.15, boxShadow: "0 0 10px rgba(59, 130, 246, 0.4)" }}
                 >
                   {tech}
                 </motion.span>
