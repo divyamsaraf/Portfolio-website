@@ -92,6 +92,36 @@ export interface Resume {
 }
 
 // ============================================================================
+// EDUCATION
+// ============================================================================
+export interface Education {
+  id: ID;
+  institution: string;
+  degree: string;
+  field_of_study: string;
+  start_date: string;
+  end_date?: string | null;
+  gpa?: number;
+  description?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+// ============================================================================
+// COLLABORATION
+// ============================================================================
+export interface Collaboration {
+  id: ID;
+  title: string;
+  description: string;
+  type: "open_source" | "collaboration" | "project";
+  link?: string;
+  icon?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+// ============================================================================
 // USER (for admin auth)
 // ============================================================================
 export interface User {

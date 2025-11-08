@@ -4,6 +4,8 @@ This guide covers deploying your portfolio website to Vercel with Supabase backe
 
 ## Prerequisites
 
+- **Node.js 20+** (required by Supabase)
+- **npm 10+**
 - GitHub account with repository pushed
 - Supabase project created
 - Vercel account
@@ -222,6 +224,62 @@ For issues:
 3. Review browser console for errors
 4. Check GitHub Issues
 
+## Admin Authentication (NEW)
+
+The admin dashboard now uses Supabase authentication with two methods:
+
+### Email & Password Login
+- Use your Supabase auth credentials
+- Email must be in `admin_users` table
+
+### Magic Link Login
+- Receive sign-in link via email
+- No password required
+- More secure option
+
+**Setup:**
+1. Add your email to `admin_users` table
+2. Go to `/admin`
+3. Choose login method
+4. Sign in
+
+## New Sections (v2.0)
+
+### Education Section
+- Display education history
+- Shows institution, degree, GPA
+- Formatted dates (Month/Year)
+- Timeline design
+
+### Collaboration Section
+- Open source opportunities
+- Collaboration requests
+- Project partnerships
+- Type-based icons
+
+### Resume Section
+- Increased PDF display height
+- Google Drive integration
+- Direct PDF file support
+- Download functionality
+
+### Go to Top Button
+- Appears after scrolling 300px
+- Smooth scroll animation
+- Mobile-friendly
+
+## Section Order
+
+1. Hero
+2. About
+3. Experience
+4. Projects
+5. Skills
+6. Education (NEW)
+7. Resume (NEW)
+8. Collaboration (NEW)
+9. Contact
+
 ## Security Checklist
 
 - [ ] Environment variables are secure
@@ -230,4 +288,6 @@ For issues:
 - [ ] CORS is properly configured
 - [ ] Rate limiting is enabled
 - [ ] Backups are configured
+- [ ] Node.js 20+ is installed
+- [ ] Supabase auth is configured
 

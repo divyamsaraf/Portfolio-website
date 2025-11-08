@@ -97,14 +97,14 @@ export default function ResumeSection() {
 
           {/* Preview Section */}
           <motion.div
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
             {resume.file_url.includes('drive.google.com') ? (
               // Google Drive PDF
-              <div className="aspect-video bg-gray-100 dark:bg-gray-700">
+              <div className="w-full h-screen md:h-[800px] bg-gray-100 dark:bg-gray-700">
                 <iframe
                   src={`https://drive.google.com/file/d/${extractGoogleDriveId(resume.file_url)}/preview`}
                   className="w-full h-full"
@@ -114,7 +114,7 @@ export default function ResumeSection() {
               </div>
             ) : resume.file_url.endsWith('.pdf') ? (
               // Direct PDF file
-              <div className="aspect-video bg-gray-100 dark:bg-gray-700">
+              <div className="w-full h-screen md:h-[800px] bg-gray-100 dark:bg-gray-700">
                 <iframe
                   src={`${resume.file_url}#toolbar=0`}
                   className="w-full h-full"
@@ -123,7 +123,7 @@ export default function ResumeSection() {
               </div>
             ) : (
               // Fallback
-              <div className="aspect-video bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+              <div className="w-full h-screen md:h-[800px] bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                 <div className="text-center">
                   <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />

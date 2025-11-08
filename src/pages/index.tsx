@@ -3,9 +3,13 @@ import { useRouter } from "next/router";
 import Hero from "../components/sections/Hero";
 import AboutSection from "../components/sections/AboutSection";
 import ExperienceSection from "../components/sections/ExperienceSection";
-import SkillsSection from "../components/sections/SkillsSection";
 import ProjectsGrid from "../components/sections/ProjectsGrid";
+import SkillsSection from "../components/sections/SkillsSection";
+import EducationSection from "../components/sections/EducationSection";
+import CollaborationSection from "../components/sections/CollaborationSection";
+import ResumeSection from "../components/sections/ResumeSection";
 import ContactForm from "../components/ContactForm";
+import GoToTopButton from "../components/GoToTopButton";
 
 export default function Home() {
   const router = useRouter();
@@ -30,8 +34,10 @@ export default function Home() {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
       </div>
 
+      {/* Hero Section */}
       <Hero />
 
+      {/* About Section */}
       <section id="about" className="relative py-20 px-6 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
@@ -41,6 +47,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Experience Section */}
       <section id="experience" className="relative py-20 px-6 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
@@ -50,15 +57,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="skills" className="relative py-20 px-6 scroll-mt-20">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Skills
-          </h2>
-          <SkillsSection />
-        </div>
-      </section>
-
+      {/* Projects Section */}
       <section id="projects" className="relative py-20 px-6 scroll-mt-20">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
@@ -68,9 +67,53 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Skills Section */}
+      <section id="skills" className="relative py-20 px-6 scroll-mt-20">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+            Skills
+          </h2>
+          <SkillsSection />
+        </div>
+      </section>
+
+      {/* Education Section */}
+      <section id="education" className="relative py-20 px-6 scroll-mt-20">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+            Education
+          </h2>
+          <EducationSection />
+        </div>
+      </section>
+
+      {/* Resume Section */}
+      <section id="resume" className="relative py-20 px-6 scroll-mt-20">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+            Resume
+          </h2>
+          <ResumeSection />
+        </div>
+      </section>
+
+      {/* Collaboration Section */}
+      <section id="collaboration" className="relative py-20 px-6 scroll-mt-20">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+            Open for Collaboration
+          </h2>
+          <CollaborationSection />
+        </div>
+      </section>
+
+      {/* Contact Section */}
       <section id="contact" className="relative py-20 px-6 scroll-mt-20">
         <ContactForm showTitle={true} />
       </section>
+
+      {/* Go to Top Button */}
+      <GoToTopButton />
     </main>
   );
 }

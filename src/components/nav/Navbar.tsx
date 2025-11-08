@@ -69,7 +69,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
         whileTap={{ scale: 0.95 }}
       >
         <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Divyam
+          Divyam Saraf
         </Link>
       </motion.div>
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { Project } from "../../lib/types";
 
 // Fallback projects data
@@ -38,6 +38,7 @@ const FALLBACK_PROJECTS: Project[] = [
 export default function ProjectsGrid() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -140,7 +141,16 @@ export default function ProjectsGrid() {
             <h3 className="font-bold text-xl mb-2 text-gray-100 dark:text-white group-hover:text-blue-300 dark:group-hover:text-blue-300 transition">{project.title}</h3>
             <p className="text-gray-300 dark:text-gray-200 mb-3 text-sm">{project.description}</p>
             {project.long_description && (
-              <p className="text-gray-400 dark:text-gray-300 mb-3 text-xs line-clamp-2">{project.long_description}</p>
+              <div className="mb-3">
+                <p className="text-gray-400 dark:text-gray-300 mb-2 text-xs line-clamp-2">{project.long_description}</p>
+                <motion.button
+                  onClick={() => setSelectedProject(project)}
+                  className="text-blue-400 hover:text-blue-300 text-xs font-semibold transition"
+                  whileHover={{ x: 2 }}
+                >
+                  View Details →
+                </motion.button>
+              </div>
             )}
             <div className="flex flex-wrap gap-2 mb-4">
               {project.tech_stack && Array.isArray(project.tech_stack) && project.tech_stack.map((tech, idx) => (
@@ -181,6 +191,90 @@ export default function ProjectsGrid() {
         </motion.div>
       ))}
       </motion.div>
+
+      {/* Project Details Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedProject(null)}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto border border-slate-700"
+            >
+              <div className="p-8">
+                <div className="flex justify-between items-start mb-4">
+                  <h2 className="text-3xl font-bold text-white">{selectedProject.title}</h2>
+                  <motion.button
+                    onClick={() => setSelectedProject(null)}
+                    className="text-gray-400 hover:text-white transition"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    ✕
+                  </motion.button>
+                </div>
+
+                <p className="text-gray-300 mb-4">{selectedProject.description}</p>
+
+                {selectedProject.long_description && (
+                  <div className="mb-6 p-4 bg-slate-700/50 rounded-lg border border-slate-600">
+                    <h3 className="text-lg font-semibold text-blue-300 mb-2">Details</h3>
+                    <p className="text-gray-300 whitespace-pre-wrap">{selectedProject.long_description}</p>
+                  </div>
+                )}
+
+                {selectedProject.tech_stack && Array.isArray(selectedProject.tech_stack) && (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-blue-300 mb-3">Technologies</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProject.tech_stack.map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 text-sm bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 rounded-full border border-blue-500/30"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-4">
+                  {selectedProject.github_url && (
+                    <motion.a
+                      href={selectedProject.github_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      GitHub
+                    </motion.a>
+                  )}
+                  {selectedProject.live_url && (
+                    <motion.a
+                      href={selectedProject.live_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-semibold transition"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      Live Demo
+                    </motion.a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 }

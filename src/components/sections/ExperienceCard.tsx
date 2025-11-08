@@ -3,6 +3,16 @@ import type { Experience } from "../../lib/types";
 
 interface ExperienceCardProps extends Experience {}
 
+const formatDateToMonthYear = (dateString: string | null | undefined): string => {
+  if (!dateString) return "Present";
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", { year: "numeric", month: "short" });
+  } catch {
+    return dateString;
+  }
+};
+
 export default function ExperienceCard({
   role,
   company,
@@ -13,7 +23,9 @@ export default function ExperienceCard({
   achievements,
   location,
 }: ExperienceCardProps) {
-  const duration = end_date ? `${start_date} - ${end_date}` : `${start_date} - Present`;
+  const formattedStartDate = formatDateToMonthYear(start_date);
+  const formattedEndDate = formatDateToMonthYear(end_date);
+  const duration = end_date ? `${formattedStartDate} - ${formattedEndDate}` : `${formattedStartDate} - Present`;
   const isCurrentRole = !end_date;
 
   return (

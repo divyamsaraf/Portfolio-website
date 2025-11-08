@@ -20,9 +20,12 @@ export const NAV_ITEMS = [
   { href: "/", label: "Home", icon: "🏠" },
   { href: "/#about", label: "About", icon: "👤" },
   { href: "/#experience", label: "Experience", icon: "💼" },
-  { href: "/#skills", label: "Skills", icon: "🛠️" },
   { href: "/#projects", label: "Projects", icon: "📁" },
-  { href: "/resume", label: "Resume", icon: "📄" },
+  { href: "/#skills", label: "Skills", icon: "🛠️" },
+  { href: "/#education", label: "Education", icon: "🎓" },
+  { href: "/#resume", label: "Resume", icon: "📄" },
+  { href: "/#collaboration", label: "Collaborate", icon: "🤝" },
+  { href: "/#contact", label: "Contact", icon: "✉️" },
 ] as const;
 
 // ============================================================================

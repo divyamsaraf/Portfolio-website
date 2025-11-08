@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import type { User } from "../../lib/types";
+import { useSupabaseAuth } from "../../hooks/useSupabaseAuth";
 import HeroForm from "./components/HeroForm";
 import AboutForm from "./components/AboutForm";
 import ExperienceForm from "./components/ExperienceForm";
@@ -8,44 +8,39 @@ import SkillsForm from "./components/SkillsForm";
 import ProjectsForm from "./components/ProjectsForm";
 import ResumeForm from "./components/ResumeForm";
 
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123";
-
 export default function AdminDashboard() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading, error, signInWithEmail, signInWithMagicLink, signOut, isAuthenticated } = useSupabaseAuth();
   const [activeTab, setActiveTab] = useState("hero");
-  const [showPasswordPrompt, setShowPasswordPrompt] = useState(true);
+  const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [authMode, setAuthMode] = useState<"email" | "magic">("email");
+  const [magicLinkSent, setMagicLinkSent] = useState(false);
 
-  useEffect(() => {
-    // Check if already authenticated in session storage
-    const isAuth = typeof window !== "undefined" && sessionStorage.getItem("adminAuth") === "true";
-    if (isAuth) {
-      setShowPasswordPrompt(false);
-      setUser({ email: "admin@portfolio.local" } as User);
-    }
-    setLoading(false);
-  }, []);
-
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput === ADMIN_PASSWORD) {
-      sessionStorage.setItem("adminAuth", "true");
-      setShowPasswordPrompt(false);
-      setUser({ email: "admin@portfolio.local" } as User);
-      setPasswordError("");
-    } else {
-      setPasswordError("Invalid password");
+    setAuthError("");
+    const success = await signInWithEmail(emailInput, passwordInput);
+    if (!success) {
+      setAuthError(error || "Sign in failed");
       setPasswordInput("");
     }
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("adminAuth");
-    setShowPasswordPrompt(true);
-    setPasswordInput("");
-    setUser(null);
+  const handleMagicLinkSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError("");
+    const success = await signInWithMagicLink(emailInput);
+    if (success) {
+      setMagicLinkSent(true);
+      setEmailInput("");
+    } else {
+      setAuthError(error || "Magic link sign in failed");
+    }
+  };
+
+  const handleLogout = async () => {
+    await signOut();
   };
 
   if (loading) {
@@ -56,8 +51,8 @@ export default function AdminDashboard() {
     );
   }
 
-  // Password prompt screen
-  if (showPasswordPrompt) {
+  // Authentication screen
+  if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
         <motion.div
@@ -69,37 +64,125 @@ export default function AdminDashboard() {
           <h1 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Admin Dashboard
           </h1>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-6">Enter password to continue</p>
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-6">Sign in to continue</p>
 
-          <form onSubmit={handlePasswordSubmit} className="space-y-4">
-            <div>
-              <input
-                type="password"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="Enter admin password"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              {passwordError && (
-                <p className="text-red-600 dark:text-red-400 text-sm mt-2">{passwordError}</p>
-              )}
-            </div>
-            <motion.button
-              type="submit"
-              className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+          {magicLinkSent && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
             >
-              Unlock Dashboard
+              <p className="text-green-800 dark:text-green-200 text-sm">
+                ✓ Magic link sent! Check your email to sign in.
+              </p>
+            </motion.div>
+          )}
+
+          {authError && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+            >
+              <p className="text-red-800 dark:text-red-200 text-sm">{authError}</p>
+            </motion.div>
+          )}
+
+          {/* Tab selector */}
+          <div className="flex gap-2 mb-6">
+            <motion.button
+              onClick={() => setAuthMode("email")}
+              className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all ${
+                authMode === "email"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+              }`}
+              whileHover={{ scale: 1.02 }}
+            >
+              Email & Password
             </motion.button>
-          </form>
+            <motion.button
+              onClick={() => setAuthMode("magic")}
+              className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all ${
+                authMode === "magic"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+              }`}
+              whileHover={{ scale: 1.02 }}
+            >
+              Magic Link
+            </motion.button>
+          </div>
+
+          {/* Email & Password Form */}
+          {authMode === "email" && (
+            <form onSubmit={handleEmailSignIn} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  placeholder="admin@example.com"
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <motion.button
+                type="submit"
+                className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Sign In
+              </motion.button>
+            </form>
+          )}
+
+          {/* Magic Link Form */}
+          {authMode === "magic" && (
+            <form onSubmit={handleMagicLinkSignIn} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  placeholder="admin@example.com"
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <motion.button
+                type="submit"
+                className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Send Magic Link
+              </motion.button>
+            </form>
+          )}
         </motion.div>
       </div>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   const tabs = [

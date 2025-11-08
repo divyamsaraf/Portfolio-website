@@ -63,7 +63,7 @@ export default function ContactForm({ showTitle = true }: ContactFormProps) {
           animate={{ opacity: 1, scale: 1 }}
           className="mb-6 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 rounded-lg text-green-800 dark:text-green-200 text-center"
         >
-          ✅ Thanks for reaching out! I'll get back to you soon.
+          ✅ Thanks for reaching out! I&apos;ll get back to you soon.
         </motion.div>
       )}
 
