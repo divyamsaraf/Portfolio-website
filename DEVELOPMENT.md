@@ -1,197 +1,138 @@
-# Development Roadmap
+# Development Guide
 
-This document outlines the development phases for the professional portfolio website.
+Complete guide for developing and maintaining the portfolio website.
 
-## Completed Phases
+## Quick Start
 
-### Phase 1: Fix Project Structure and Remove Duplicates
-Status: COMPLETE
+### Prerequisites
+- Node.js 18+ (20+ recommended)
+- npm or yarn
+- Git
+- Supabase account
 
-- Consolidated duplicate components to src/components/sections/
-- Removed 7 duplicate component files
-- Fixed all import paths across the application
-- Established clean folder structure
-- Created projects index page
+### Setup Steps
 
-Commits:
-- 36f0d19 - Initial commit with project structure
+1. Clone repository
+```bash
+git clone https://github.com/divyamsaraf/Portfolio-website.git
+cd Portfolio-website
+```
 
-### Phase 2: Fix TypeScript and Type Safety
-Status: COMPLETE
+2. Install dependencies
+```bash
+npm install
+```
 
-- Created centralized type definitions in src/lib/types.ts
-- Defined interfaces: Hero, About, Experience, Skill, Project, Resume, User
-- Fixed all TypeScript errors and implicit any issues
-- Updated all admin forms with proper typing
-- Removed @ts-ignore comments
-- Fixed data files to use correct field names
+3. Set up environment variables
+```bash
+cp .env.example .env.local
+```
 
-Key Changes:
-- src/lib/types.ts - Centralized type definitions
-- src/pages/admin/components/*.tsx - Updated with proper types
-- src/data/*.ts - Fixed field names to match types
+4. Configure Supabase (see SUPABASE_SETUP.md)
 
-### Phase 3: Build Supabase Integration and API Routes
-Status: COMPLETE
+5. Run development server
+```bash
+npm run dev
+```
 
-- Created 5 new API routes for CRUD operations
-- Implemented proper error handling and validation
-- Added file upload support with formidable
-- Type-safe API responses using TypeScript generics
-- Installed required dependencies (formidable, nodemailer, resend)
+6. Open http://localhost:3000
 
-API Routes Created:
-- /api/admin/hero - Hero section management
-- /api/admin/about - About section management
-- /api/admin/experience - Experience CRUD
-- /api/admin/skills - Skills management
-- /api/admin/projects - Projects management
-- /api/admin/uploadResume - Resume file upload
+## Available Scripts
 
-Build Status: Successful (No TypeScript errors)
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm start            # Start production server
+npm test             # Run tests
+npm run lint         # Run ESLint
+npm run format       # Format code with Prettier
+```
 
----
+## Project Structure
 
-## In Progress and Upcoming Phases
+```
+src/
+├── components/
+│   ├── sections/        - Page sections (Hero, About, etc)
+│   ├── layout/          - Layout wrapper
+│   ├── nav/             - Navigation components
+│   ├── ErrorBoundary.tsx
+│   └── ContactForm.tsx
+├── pages/
+│   ├── api/             - API routes
+│   ├── admin/           - Admin dashboard
+│   ├── projects/        - Project pages
+│   └── [page].tsx       - Main pages
+├── lib/
+│   ├── types.ts         - Type definitions
+│   ├── supabaseClient.ts
+│   └── utils.ts
+├── hooks/
+│   ├── useFetch.ts
+│   └── usePerformance.ts
+├── context/
+│   └── ThemeContext.tsx
+├── styles/
+│   └── globals.css
+└── __tests__/           - Test files
+```
 
-### Phase 4: Testing Authentication Flow and CRUD Operations
-Status: IN PROGRESS
+## Environment Variables
 
-Objectives:
-- Test Supabase authentication flow
-- Verify all CRUD operations work end-to-end
-- Test admin form submissions
-- Verify file upload functionality
-- Test error handling and validation
-- Verify loading and saving states
-- Test dark mode in admin dashboard
+Create `.env.local` file:
 
-Testing Checklist:
-- Admin login/logout works
-- Hero form saves and retrieves data
-- About form saves and retrieves data
-- Experience CRUD operations work
-- Skills CRUD operations work
-- Projects CRUD operations work
-- Resume upload works
-- All forms show proper error messages
-- Loading states display correctly
-- Saving states display correctly
+```
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+NEXT_PUBLIC_ADMIN_EMAIL=your_admin_email
+RESEND_API_KEY=your_resend_key (optional)
+```
 
-Branch: feat/admin-dashboard-phase4
+## Database Setup
 
-### Phase 5: Ensuring Frontend Pages Properly Fetch from Supabase
-Status: PENDING
+See SUPABASE_SETUP.md for complete database setup instructions.
 
-Objectives:
-- Update all frontend pages to fetch from Supabase
-- Implement proper loading states
-- Add error boundaries
-- Test data fetching on all pages
-- Verify responsive design
-- Test mobile experience
+## Testing
 
-Pages to Update:
-- / - Homepage with all sections
-- /about - About page
-- /experience - Experience page
-- /skills - Skills page
-- /projects - Projects listing
-- /projects/[slug] - Project detail page
-- /resume - Resume page
+Run tests with: `npm test`
 
-Branch: feat/frontend-supabase-integration
+Test coverage:
+- API route tests (5 tests)
+- Component tests (5 tests)
+- Authentication tests
+- Error handling tests
 
-### Phase 6: Polishing UI/UX with Dark Mode and Animations
-Status: PENDING
+All tests passing: 10/10
 
-Objectives:
-- Verify dark/light mode toggle works
-- Test theme persistence
-- Add more Framer Motion animations
-- Polish typography and spacing
-- Improve shadows and depth
-- Add hover effects
-- Test accessibility
-- Verify color contrast
+## Code Style
 
-Components to Polish:
-- Navigation bar
-- Hero section
-- About section
-- Experience section
-- Skills section
-- Projects grid
-- Resume section
-- Footer
-
-Branch: feat/ui-polish-animations
-
-### Phase 7: Performance Optimization and Testing
-Status: PENDING
-
-Objectives:
-- Run Lighthouse audit
-- Optimize bundle size
-- Implement code splitting
-- Optimize images
-- Test performance metrics
-- Fix any performance issues
-- Test on slow networks
-- Test on low-end devices
-
-Performance Targets:
-- Lighthouse Score: 90+
-- First Load JS: <200 kB
-- API Response Time: <100ms
-- Page Load Time: <2s
-
-Branch: feat/performance-optimization
-
-### Phase 8: Deployment and Documentation
-Status: PENDING
-
-Objectives:
-- Configure environment variables for Vercel
-- Set up Vercel deployment
-- Configure custom domain
-- Set up CI/CD pipeline
-- Create deployment documentation
-- Add troubleshooting guide
-- Create API documentation
-- Add contribution guidelines
-
-Deployment Checklist:
-- All environment variables configured
-- Database migrations complete
-- Storage buckets created
-- Authentication configured
-- Email service configured
-- Domain configured
-- SSL certificate active
-- Monitoring set up
-
-Branch: feat/deployment-vercel
-
----
+- Use TypeScript strict mode
+- Use functional components with hooks
+- Use const for variables
+- Use arrow functions
+- Add JSDoc comments for complex functions
+- Keep functions small and focused
 
 ## Git Workflow
 
-### Branch Naming Convention
-- main - Production-ready code
-- develop - Development branch
-- feat/feature-name - Feature branches
-- fix/bug-name - Bug fix branches
-- docs/doc-name - Documentation branches
+```bash
+# Create feature branch
+git checkout -b feature/feature-name
 
-### Commit Convention
+# Make changes and commit
+git add .
+git commit -m "feat: add feature description"
 
-Format:
-type(scope): subject
+# Push to GitHub
+git push origin feature/feature-name
 
-body
+# Create pull request on GitHub
+```
 
-footer
+## Commit Convention
+
+Format: `type(scope): subject`
 
 Types:
 - feat - New feature
@@ -204,32 +145,84 @@ Types:
 - chore - Build/dependency changes
 
 Example:
+```
 feat(admin): add project management CRUD operations
 
 - Implement create, read, update, delete for projects
 - Add form validation and error handling
 - Integrate with Supabase API
+```
 
-Closes #123
+## Performance Targets
 
----
+- Lighthouse Score: 90+
+- First Load JS: ~173 kB
+- Time to Interactive: <3s
+- API Response Time: <100ms
 
-## Related Documentation
+## Security
 
-- README.md - Project overview and setup
-- SECURITY.md - Security policies and best practices
-- CONTRIBUTING.md - Contribution guidelines
-- .env.example - Environment variables template
-- package.json - Dependencies and scripts
+- All environment variables are kept secret
+- Row Level Security (RLS) is configured
+- API routes validate input
+- CORS is properly configured
+- Security headers are set
 
----
+## Troubleshooting
 
-## Support
+See TROUBLESHOOTING.md for common issues and solutions.
 
-For questions or issues, refer to README.md or create an issue on GitHub.
+## Common Issues
 
----
+### React Error #321
+See TROUBLESHOOTING.md - useContext Error section
 
-Last Updated: November 2024
-Status: Active Development
+### Supabase 404/406 Errors
+See SUPABASE_SETUP.md - ensure tables are created
+
+### Environment Variables Not Loading
+See TROUBLESHOOTING.md - Environment Variables section
+
+## Performance Optimization Tips
+
+1. Use Next.js Image component for images
+2. Implement code splitting with dynamic imports
+3. Use React.memo for expensive components
+4. Optimize bundle size with webpack analysis
+5. Use lazy loading for below-the-fold content
+6. Implement route prefetching
+7. Use CSS-in-JS sparingly
+
+## Deployment
+
+See DEPLOYMENT.md for complete deployment instructions.
+
+## Useful Resources
+
+- Next.js Documentation: https://nextjs.org/docs
+- Supabase Documentation: https://supabase.com/docs
+- TailwindCSS Documentation: https://tailwindcss.com/docs
+- React Documentation: https://react.dev
+- TypeScript Documentation: https://www.typescriptlang.org/docs
+
+## Technology Stack
+
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: TailwindCSS, Framer Motion
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Testing**: Jest, React Testing Library
+- **Deployment**: Vercel, GitHub
+
+## Completed Phases
+
+- Phase 1: Project Setup & Structure ✓
+- Phase 2: Core Components & Pages ✓
+- Phase 3: Supabase Integration ✓
+- Phase 4: Testing & Authentication ✓
+- Phase 5: Frontend Data Fetching ✓
+- Phase 6: UI/UX Polish ✓
+- Phase 7: Performance Optimization ✓
+- Phase 8: Deployment ✓
+
+All phases completed successfully!
 
