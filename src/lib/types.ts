@@ -12,6 +12,7 @@ export interface Hero {
   title: string;
   subtitle: string;
   roles?: string[];
+  collaboration_roles?: string[];
   cta_github: string;
   cta_resume: string;
   created_at?: string;

@@ -13,9 +13,17 @@ const DEFAULT_ROLES = [
   "Open to SDE Roles (STEM OPT)",
 ];
 
+const DEFAULT_COLLABORATION_ROLES = [
+  "Open Source Contribution",
+  "Collaboration Projects",
+  "Technical Mentoring",
+];
+
 const DEFAULT_HERO: HeroType = {
   title: "Divyam Saraf",
   subtitle: "Building scalable, maintainable systems with Java, Python, and modern React stacks. Open to SDE roles (STEM OPT).",
+  roles: DEFAULT_ROLES,
+  collaboration_roles: DEFAULT_COLLABORATION_ROLES,
   cta_github: "https://github.com/divyamsaraf",
   cta_resume: "https://example.com/resume.pdf",
 };
@@ -151,6 +159,26 @@ export default function Hero() {
         >
           {hero.subtitle}
         </motion.p>
+
+        {/* Collaboration Roles */}
+        {hero.collaboration_roles && hero.collaboration_roles.length > 0 && (
+          <motion.div
+            className="mb-12 flex flex-wrap gap-3 justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          >
+            {hero.collaboration_roles.map((role, idx) => (
+              <motion.span
+                key={idx}
+                className="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 text-cyan-300 text-sm font-medium backdrop-blur-sm"
+                whileHover={{ scale: 1.05, borderColor: "rgba(34, 211, 238, 0.6)" }}
+              >
+                ✨ {role}
+              </motion.span>
+            ))}
+          </motion.div>
+        )}
 
         {/* CTA Buttons */}
         <motion.div

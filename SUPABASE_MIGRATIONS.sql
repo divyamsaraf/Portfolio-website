@@ -27,11 +27,15 @@ CREATE TABLE IF NOT EXISTS hero (
   title VARCHAR(255) NOT NULL DEFAULT 'Your Name',
   subtitle TEXT NOT NULL DEFAULT 'Your subtitle',
   roles TEXT[] DEFAULT ARRAY['Role 1', 'Role 2', 'Role 3'],
+  collaboration_roles TEXT[] DEFAULT ARRAY['Open Source Contribution', 'Collaboration Projects', 'Technical Mentoring'],
   cta_github VARCHAR(500) DEFAULT 'https://github.com/yourusername',
   cta_resume VARCHAR(500) DEFAULT 'https://your-resume-link.com',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Add collaboration_roles column if it doesn't exist (for existing databases)
+ALTER TABLE hero ADD COLUMN IF NOT EXISTS collaboration_roles TEXT[] DEFAULT ARRAY['Open Source Contribution', 'Collaboration Projects', 'Technical Mentoring'];
 
 -- ============================================================================
 -- ABOUT TABLE

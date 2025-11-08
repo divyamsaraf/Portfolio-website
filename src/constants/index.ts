@@ -24,7 +24,6 @@ export const NAV_ITEMS = [
   { href: "/#skills", label: "Skills", icon: "🛠️" },
   { href: "/#education", label: "Education", icon: "🎓" },
   { href: "/#resume", label: "Resume", icon: "📄" },
-  { href: "/#collaboration", label: "Collaborate", icon: "🤝" },
   { href: "/#contact", label: "Contact", icon: "✉️" },
 ] as const;
 
