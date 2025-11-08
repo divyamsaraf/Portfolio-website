@@ -9,6 +9,16 @@ interface NavbarProps {
   toggleTheme: () => void;
 }
 
+const handleNavClick = (href: string) => {
+  if (href.startsWith("/#")) {
+    const elementId = href.substring(2);
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+};
+
 export default function Navbar({ theme, toggleTheme }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -56,13 +66,23 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
       >
         {navItems.map((item) => (
           <motion.div key={item.href} variants={itemVariants}>
-            <Link
-              href={item.href}
-              className="relative group text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition font-medium"
-            >
-              {item.label}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300" />
-            </Link>
+            {item.href.startsWith("/#") ? (
+              <button
+                onClick={() => handleNavClick(item.href)}
+                className="relative group text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition font-medium cursor-pointer bg-none border-none"
+              >
+                {item.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300" />
+              </button>
+            ) : (
+              <Link
+                href={item.href}
+                className="relative group text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition font-medium"
+              >
+                {item.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300" />
+              </Link>
+            )}
           </motion.div>
         ))}
 
@@ -118,14 +138,27 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
       >
         <div className="flex flex-col gap-2 p-4">
           {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setIsOpen(false)}
-              className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
-            >
-              {item.label}
-            </Link>
+            item.href.startsWith("/#") ? (
+              <button
+                key={item.href}
+                onClick={() => {
+                  handleNavClick(item.href);
+                  setIsOpen(false);
+                }}
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition text-left bg-none border-none cursor-pointer"
+              >
+                {item.label}
+              </button>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
+              >
+                {item.label}
+              </Link>
+            )
           ))}
           <Link
             href="/admin"

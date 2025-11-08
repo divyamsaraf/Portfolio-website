@@ -65,7 +65,7 @@ export default function SocialLinks({
 
   return (
     <motion.div
-      className={`flex items-center gap-4 ${className}`}
+      className={`flex items-center justify-center gap-4 ${className}`}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -77,6 +77,7 @@ export default function SocialLinks({
           target="_blank"
           rel="noopener noreferrer"
           title={link.label}
+          aria-label={link.label}
           variants={itemVariants}
           whileHover={{ scale: 1.2, rotate: 5 }}
           whileTap={{ scale: 0.95 }}
@@ -85,12 +86,15 @@ export default function SocialLinks({
             text-gray-700 dark:text-gray-300
             hover:text-blue-600 dark:hover:text-blue-400
             transition-colors duration-200
+            flex-shrink-0
             ${ICON_SIZES[size]}
           `}
         >
-          {ICON_COMPONENTS[link.icon] || (
-            <span className="text-sm font-semibold">{link.name[0]}</span>
-          )}
+          <span className="flex items-center justify-center w-full h-full">
+            {ICON_COMPONENTS[link.icon] || (
+              <span className="text-sm font-semibold">{link.name[0]}</span>
+            )}
+          </span>
         </motion.a>
       ))}
     </motion.div>

@@ -3,12 +3,13 @@ import AboutSection from "../components/sections/AboutSection";
 import ExperienceSection from "../components/sections/ExperienceSection";
 import SkillsSection from "../components/sections/SkillsSection";
 import ProjectsGrid from "../components/sections/ProjectsGrid";
+import ContactForm from "../components/ContactForm";
 
 export default function Home() {
   return (
     <main className="bg-gray-50 dark:bg-gray-900 transition-colors">
       <Hero />
-      <section className="py-20 px-6 bg-white dark:bg-gray-800">
+      <section id="about" className="py-20 px-6 bg-white dark:bg-gray-800 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">
             About
@@ -16,7 +17,7 @@ export default function Home() {
           <AboutSection />
         </div>
       </section>
-      <section className="py-20 px-6 bg-gray-50 dark:bg-gray-900">
+      <section id="experience" className="py-20 px-6 bg-gray-50 dark:bg-gray-900 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">
             Experience
@@ -24,7 +25,7 @@ export default function Home() {
           <ExperienceSection />
         </div>
       </section>
-      <section className="py-20 px-6 bg-white dark:bg-gray-800">
+      <section id="skills" className="py-20 px-6 bg-white dark:bg-gray-800 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">
             Skills
@@ -32,13 +33,16 @@ export default function Home() {
           <SkillsSection />
         </div>
       </section>
-      <section className="py-20 px-6 bg-gray-50 dark:bg-gray-900">
+      <section id="projects" className="py-20 px-6 bg-gray-50 dark:bg-gray-900 scroll-mt-20">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">
             Projects
           </h2>
           <ProjectsGrid />
         </div>
+      </section>
+      <section id="contact" className="py-20 px-6 bg-white dark:bg-gray-800 scroll-mt-20">
+        <ContactForm showTitle={true} />
       </section>
     </main>
   );

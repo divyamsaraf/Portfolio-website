@@ -3,30 +3,64 @@ import { supabase } from "../../lib/supabaseClient";
 import { motion } from "framer-motion";
 import type { Project } from "../../lib/types";
 
+// Fallback projects data
+const FALLBACK_PROJECTS: Project[] = [
+  {
+    id: 1,
+    title: "RetailOps Pro",
+    slug: "retailops-pro",
+    description: "Inventory & order management platform.",
+    long_description: "Built microservices for inventory, orders and invoices.",
+    tech_stack: ["Java", "Spring Boot", "AWS", "React"],
+    tags: ["Full Stack"],
+    github_url: "https://github.com/divyamsaraf",
+    live_url: "",
+    screenshot: "",
+    featured: true,
+    date: "2023-06-15",
+  },
+  {
+    id: 2,
+    title: "LYKAS Chat",
+    slug: "lykas-chat",
+    description: "Real-time chat for advisory platform.",
+    long_description: "Real-time messaging with WebSocket support.",
+    tech_stack: ["Python", "Django", "Vue"],
+    tags: ["Realtime"],
+    github_url: "https://github.com/divyamsaraf",
+    live_url: "",
+    screenshot: "",
+    featured: false,
+    date: "2023-01-10",
+  },
+];
+
 export default function ProjectsGrid() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        setError(null);
         const { data, error: supabaseError } = await supabase
           .from("projects")
           .select("*")
           .order("date", { ascending: false });
+
         if (supabaseError) {
-          console.error("Failed to fetch projects:", supabaseError);
-          setError("Failed to load projects");
-          setProjects([]);
-        } else if (data) {
+          console.warn("Failed to fetch projects from Supabase:", supabaseError);
+          console.log("Using fallback projects data");
+          setProjects(FALLBACK_PROJECTS);
+        } else if (data && data.length > 0) {
           setProjects(data);
+        } else {
+          console.log("No projects found in Supabase, using fallback data");
+          setProjects(FALLBACK_PROJECTS);
         }
       } catch (err) {
         console.error("Failed to fetch projects:", err);
-        setError("An error occurred while loading projects");
-        setProjects([]);
+        console.log("Using fallback projects data due to error");
+        setProjects(FALLBACK_PROJECTS);
       } finally {
         setLoading(false);
       }
@@ -38,15 +72,6 @@ export default function ProjectsGrid() {
     return (
       <motion.section className="max-w-6xl mx-auto py-20 px-4 text-center">
         <p className="text-gray-500 dark:text-gray-400">Loading projects...</p>
-      </motion.section>
-    );
-  }
-
-  if (error) {
-    return (
-      <motion.section className="max-w-6xl mx-auto py-20 px-4 text-center">
-        <p className="text-red-600 dark:text-red-400 mb-2">{error}</p>
-        <p className="text-gray-500 dark:text-gray-400 text-sm">Please try refreshing the page</p>
       </motion.section>
     );
   }

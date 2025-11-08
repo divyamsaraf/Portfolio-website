@@ -7,8 +7,8 @@ import type { Hero as HeroType } from "../../lib/types";
 const DEFAULT_HERO: HeroType = {
   title: "Divyam Saraf",
   subtitle: "Building scalable, maintainable systems with Java, Python, and modern React stacks. Open to SDE roles (STEM OPT).",
-  cta_github: "https://github.com",
-  cta_resume: "#",
+  cta_github: "https://github.com/divyamsaraf",
+  cta_resume: "https://example.com/resume.pdf",
 };
 
 export default function Hero() {
