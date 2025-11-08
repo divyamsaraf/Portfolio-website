@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import Navbar from "../nav/Navbar";
 
 interface LayoutProps {
@@ -6,28 +6,17 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
+  // Force dark mode
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-    if (savedTheme) setTheme(savedTheme);
-    else if (window.matchMedia("(prefers-color-scheme: dark)").matches) setTheme("dark");
+    document.documentElement.classList.add("dark");
+    localStorage.setItem("theme", "dark");
   }, []);
 
-  useEffect(() => {
-    const root = window.document.documentElement;
-    if (theme === "dark") root.classList.add("dark");
-    else root.classList.remove("dark");
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
-
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors min-h-screen">
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
+    <div className="bg-gray-900 text-gray-100 min-h-screen">
+      <Navbar />
       <main className="transition-all">{children}</main>
-      <footer className="text-center py-6 text-gray-500 dark:text-gray-400">
+      <footer className="text-center py-6 text-gray-400">
         © {new Date().getFullYear()} Divyam Saraf
       </footer>
     </div>

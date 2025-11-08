@@ -122,10 +122,18 @@ export function useSupabaseAuth() {
   const signInWithMagicLink = async (email: string) => {
     try {
       setError(null);
+
+      // Get the correct redirect URL from environment or window
+      const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL
+        ? `${process.env.NEXT_PUBLIC_SITE_URL}/admin`
+        : typeof window !== "undefined"
+          ? `${window.location.origin}/admin`
+          : "";
+
       const { error: signInError } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${typeof window !== "undefined" ? window.location.origin : ""}/admin`,
+          emailRedirectTo: redirectUrl,
         },
       });
 

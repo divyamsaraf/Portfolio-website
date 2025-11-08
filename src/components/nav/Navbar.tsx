@@ -5,12 +5,7 @@ import { useState } from "react";
 import SocialLinks from "../SocialLinks";
 import { NAV_ITEMS } from "../../constants";
 
-interface NavbarProps {
-  theme: "light" | "dark";
-  toggleTheme: () => void;
-}
-
-export default function Navbar({ theme, toggleTheme }: NavbarProps) {
+export default function Navbar() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -116,27 +111,10 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
             Admin
           </Link>
         </motion.div>
-
-        <motion.button
-          onClick={toggleTheme}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="ml-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-        >
-          {theme === "dark" ? "☀️" : "🌙"}
-        </motion.button>
       </motion.div>
 
       {/* Mobile Menu Button */}
       <div className="md:hidden flex items-center gap-4">
-        <motion.button
-          onClick={toggleTheme}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-        >
-          {theme === "dark" ? "☀️" : "🌙"}
-        </motion.button>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"

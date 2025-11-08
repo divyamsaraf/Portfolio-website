@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosWithAuth from "../../../lib/axiosClient";
 import { motion } from "framer-motion";
 import type { Hero } from "../../../lib/types";
 
@@ -16,7 +16,7 @@ export default function HeroForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get<Hero>("/api/admin/hero");
+        const { data } = await axiosWithAuth.get<Hero>("/api/admin/hero");
         if (data) {
           setHero(data);
         }
@@ -36,7 +36,7 @@ export default function HeroForm() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await axios.post("/api/admin/hero", hero);
+      await axiosWithAuth.post("/api/admin/hero", hero);
       alert("Hero section updated successfully!");
     } catch (err) {
       console.error("Failed to save hero:", err);
