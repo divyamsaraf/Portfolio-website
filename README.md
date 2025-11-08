@@ -16,20 +16,25 @@ A production-ready, MAANG-level portfolio website built with Next.js 14, React 1
 - 🔍 **SEO Ready** - Meta tags, structured data, sitemap generation
 
 ### Backend & Admin
-- 🔐 **Secure Admin Dashboard** - Supabase authentication with role-based access
-- 📝 **Content Management** - Easy editing of hero, about, experience, skills, projects, resume
+- 🔐 **Secure Admin Dashboard** - Supabase email/magic link authentication
+- 📝 **Content Management** - Edit all 9 sections with live updates
 - 🗄️ **Real-time Database** - PostgreSQL with Supabase for instant updates
 - 📊 **Type-Safe** - Full TypeScript support with Zod validation
 - 🔄 **Live Updates** - Changes reflect immediately without rebuild
+- 👥 **Role-Based Access** - Admin-only authorization via admin_users table
+- 🔐 **Row Level Security** - Public read, admin write policies
 
-### Content Features
+### Content Features (9 Sections)
 - 🎯 **Hero Section** - Animated intro with social links and CTA buttons
 - 👤 **About Section** - Professional bio with stats and animations
-- 💼 **Experience Timeline** - Detailed work history with current role badge
-- 🛠️ **Skills Showcase** - Organized by category with proficiency bars
-- 📁 **Projects Gallery** - With tech stack, live demos, and GitHub links
-- 📄 **Resume** - Download and preview functionality
-- 🔗 **Social Links** - GitHub, LinkedIn, Email with hover animations
+- 💼 **Experience Timeline** - Detailed work history with month/year dates
+- 📁 **Projects Gallery** - With expandable descriptions and tech stack
+- 🛠️ **Skills Showcase** - Organized by category with proficiency bars (1-5 scale)
+- 🎓 **Education Timeline** - Institutions, degrees, GPA display (NEW)
+- 📄 **Resume** - Large PDF preview with download (NEW)
+- 🤝 **Collaboration** - Open source & partnership opportunities (NEW)
+- 📧 **Contact Form** - Email integration with Resend
+- ⬆️ **Go to Top Button** - Smooth scroll navigation (NEW)
 
 ## 🛠️ Tech Stack
 
@@ -110,11 +115,12 @@ Comprehensive content management system:
 
 ### Prerequisites
 
-- **Node.js** 18+ (check with `node --version`)
-- **npm** or **yarn** package manager
+- **Node.js** 20+ (required by Supabase) - check with `node --version`
+- **npm** 10+ package manager
 - **Supabase** account (free tier available)
 - **Vercel** account (for deployment)
 - **Git** for version control
+- **GitHub** account for repository
 
 ### Local Development
 
@@ -132,15 +138,19 @@ Comprehensive content management system:
    ```
 
 3. **Set up environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
 
-   Edit `.env.local` and add your Supabase credentials:
-   ```
+   Create `.env.local` in the root directory:
+   ```env
+   # Supabase
    NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+   # Email (for contact form)
+   NEXT_PUBLIC_RESEND_API_KEY=your-resend-api-key
+   NEXT_PUBLIC_CONTACT_EMAIL=your-email@example.com
+
+   # Optional
+   NEXT_PUBLIC_ENABLE_ANALYTICS=false
    ```
 
 4. **Run development server**
@@ -169,23 +179,31 @@ npm run type-check   # Check TypeScript types
 
 Access at `/admin` with Supabase authentication.
 
+### Authentication Methods
+
+1. **Email & Password** - Use Supabase auth credentials
+2. **Magic Link** - Receive sign-in link via email (recommended)
+
 ### Features
 
 | Feature | Description |
 |---------|-------------|
-| **Hero Editor** | Update title, subtitle, and CTA links |
-| **About Editor** | Manage professional bio |
-| **Experience Manager** | Add/edit/delete work experience |
-| **Skills Manager** | Organize skills by category with proficiency |
-| **Projects Manager** | Showcase projects with tech stack and links |
+| **Hero Editor** | Update title, subtitle, roles, and CTA links |
+| **About Editor** | Manage professional bio with line breaks |
+| **Experience Manager** | Add/edit/delete work experience with dates |
+| **Skills Manager** | Organize skills by category with proficiency (1-5) |
+| **Projects Manager** | Showcase projects with expandable descriptions |
+| **Education Manager** | Add education history with GPA (NEW) |
+| **Collaboration Manager** | Manage open source opportunities (NEW) |
 | **Resume Upload** | Upload and manage resume file |
 
-### Admin Access
+### Admin Access Setup
 
-1. Sign up with Supabase authentication
-2. Add your email to `NEXT_PUBLIC_ADMIN_EMAIL` in environment variables
-3. Access `/admin` dashboard
-4. Make changes - they're live immediately!
+1. Create Supabase project
+2. Run SQL migrations from `SUPABASE_MIGRATIONS.sql`
+3. Add your email to `admin_users` table
+4. Go to `/admin` and sign in
+5. Make changes - they're live immediately!
 
 ## ⚡ Performance Metrics
 
@@ -209,6 +227,16 @@ Access at `/admin` with Supabase authentication.
 
 ## 🚢 Deployment
 
+### Pre-Deployment Checklist
+
+- ✅ Node.js 20+ installed locally
+- ✅ Supabase project created
+- ✅ Database migrations run (`SUPABASE_MIGRATIONS.sql`)
+- ✅ Admin email added to `admin_users` table
+- ✅ Environment variables configured
+- ✅ Build passes: `npm run build`
+- ✅ Lint passes: `npm run lint`
+
 ### Deploy to Vercel (Recommended)
 
 1. **Push to GitHub**
@@ -225,8 +253,11 @@ Access at `/admin` with Supabase authentication.
    - Select this repository
 
 3. **Configure Environment Variables**
-   - Add all variables from `.env.local` to Vercel project settings
-   - Ensure `NEXT_PUBLIC_*` variables are marked as public
+   - Add all variables from `.env.local` to Vercel project settings:
+     - `NEXT_PUBLIC_SUPABASE_URL`
+     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+     - `NEXT_PUBLIC_RESEND_API_KEY`
+     - `NEXT_PUBLIC_CONTACT_EMAIL`
 
 4. **Deploy**
    - Click "Deploy"
@@ -240,7 +271,12 @@ Access at `/admin` with Supabase authentication.
 3. Update DNS records as instructed
 4. Wait for DNS propagation (5-30 minutes)
 
-For detailed deployment instructions, see [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
+### Documentation
+
+For detailed deployment instructions, see:
+- [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) - Step-by-step guide
+- [PRODUCTION_READY.md](./PRODUCTION_READY.md) - Production checklist
+- [SUPABASE_MIGRATIONS.sql](./SUPABASE_MIGRATIONS.sql) - Database setup
 
 ## 🐛 Troubleshooting
 
