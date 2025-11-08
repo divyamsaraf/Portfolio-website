@@ -103,15 +103,15 @@ export default function AboutSection() {
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">About Me</h2>
         </motion.div>
 
-        <motion.p
-          className="text-lg leading-relaxed text-gray-300 relative z-10 font-light"
+        <motion.div
+          className="text-lg leading-relaxed text-gray-300 relative z-10 font-light whitespace-pre-wrap"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
           {about.content}
-        </motion.p>
+        </motion.div>
 
         {/* Premium stats section */}
         <motion.div

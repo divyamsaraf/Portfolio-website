@@ -4,7 +4,8 @@ import type { Skill } from "../../lib/types";
 interface SkillBadgeProps extends Skill {}
 
 export default function SkillBadge({ name, icon_url, category, proficiency }: SkillBadgeProps) {
-  const proficiencyPercentage = proficiency ? (proficiency / 100) * 100 : 0;
+  // Convert proficiency to percentage (1-5 scale to 0-100%)
+  const proficiencyPercentage = proficiency ? (proficiency / 5) * 100 : 0;
 
   return (
     <motion.div
@@ -45,7 +46,7 @@ export default function SkillBadge({ name, icon_url, category, proficiency }: Sk
               />
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center">
-              {proficiency}%
+              {proficiency}/5
             </p>
           </div>
         )}
@@ -59,7 +60,7 @@ export default function SkillBadge({ name, icon_url, category, proficiency }: Sk
           whileHover={{ opacity: 1, y: 0 }}
         >
           {category && <p className="font-semibold">{category}</p>}
-          {proficiency && <p className="text-gray-300">Proficiency: {proficiency}%</p>}
+          {proficiency && <p className="text-gray-300">Proficiency: {proficiency}/5</p>}
           <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-700 rotate-45" />
         </motion.div>
       )}

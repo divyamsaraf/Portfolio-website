@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import Hero from "../components/sections/Hero";
 import AboutSection from "../components/sections/AboutSection";
 import ExperienceSection from "../components/sections/ExperienceSection";
@@ -6,6 +8,20 @@ import ProjectsGrid from "../components/sections/ProjectsGrid";
 import ContactForm from "../components/ContactForm";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Handle section navigation from query parameter
+    if (router.query.section) {
+      const sectionId = router.query.section as string;
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  }, [router.query.section]);
   return (
     <main className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 dark:bg-gradient-to-b dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 transition-colors">
       {/* Animated background elements */}

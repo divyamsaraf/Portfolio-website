@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import SocialLinks from "../SocialLinks";
@@ -9,20 +10,35 @@ interface NavbarProps {
   toggleTheme: () => void;
 }
 
-const handleNavClick = (href: string) => {
-  if (href.startsWith("/#")) {
-    const elementId = href.substring(2);
-    const element = document.getElementById(elementId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  }
-};
-
 export default function Navbar({ theme, toggleTheme }: NavbarProps) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = NAV_ITEMS;
+
+  const handleNavClick = (href: string) => {
+    if (href.startsWith("/#")) {
+      const elementId = href.substring(2);
+      // If we're on the home page, just scroll to the element
+      if (router.pathname === "/") {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      } else {
+        // If we're on a different page, navigate to home with the hash
+        router.push(`/?section=${elementId}`).then(() => {
+          // After navigation, scroll to the element
+          setTimeout(() => {
+            const element = document.getElementById(elementId);
+            if (element) {
+              element.scrollIntoView({ behavior: "smooth" });
+            }
+          }, 100);
+        });
+      }
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0, y: -20 },
