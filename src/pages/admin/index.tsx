@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import { motion } from "framer-motion";
-import { supabase } from "../../lib/supabaseClient";
 import type { User } from "../../lib/types";
 import HeroForm from "./components/HeroForm";
 import AboutForm from "./components/AboutForm";
@@ -10,40 +8,92 @@ import SkillsForm from "./components/SkillsForm";
 import ProjectsForm from "./components/ProjectsForm";
 import ResumeForm from "./components/ResumeForm";
 
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123";
+
 export default function AdminDashboard() {
-  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("hero");
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(true);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data } = await supabase.auth.getSession();
-        if (data.session?.user) {
-          setUser(data.session.user as User);
-        } else {
-          router.push("/");
-        }
-      } catch (err) {
-        console.error("Auth check failed:", err);
-        router.push("/");
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkAuth();
-  }, [router]);
+    // Check if already authenticated in session storage
+    const isAuth = typeof window !== "undefined" && sessionStorage.getItem("adminAuth") === "true";
+    if (isAuth) {
+      setShowPasswordPrompt(false);
+      setUser({ email: "admin@portfolio.local" } as User);
+    }
+    setLoading(false);
+  }, []);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/");
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput === ADMIN_PASSWORD) {
+      sessionStorage.setItem("adminAuth", "true");
+      setShowPasswordPrompt(false);
+      setUser({ email: "admin@portfolio.local" } as User);
+      setPasswordError("");
+    } else {
+      setPasswordError("Invalid password");
+      setPasswordInput("");
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("adminAuth");
+    setShowPasswordPrompt(true);
+    setPasswordInput("");
+    setUser(null);
   };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+      </div>
+    );
+  }
+
+  // Password prompt screen
+  if (showPasswordPrompt) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 w-full max-w-md"
+        >
+          <h1 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Admin Dashboard
+          </h1>
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-6">Enter password to continue</p>
+
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            <div>
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="Enter admin password"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {passwordError && (
+                <p className="text-red-600 dark:text-red-400 text-sm mt-2">{passwordError}</p>
+              )}
+            </div>
+            <motion.button
+              type="submit"
+              className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Unlock Dashboard
+            </motion.button>
+          </form>
+        </motion.div>
       </div>
     );
   }

@@ -86,16 +86,32 @@ export default function ProjectsGrid() {
 
   return (
     <motion.section
-      className="max-w-6xl mx-auto py-20 px-4 grid sm:grid-cols-2 md:grid-cols-3 gap-6"
+      className="max-w-6xl mx-auto py-20 px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
+      <motion.h2
+        className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        Featured Projects
+      </motion.h2>
+
+      <motion.div
+        className="grid sm:grid-cols-2 md:grid-cols-3 gap-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, staggerChildren: 0.1 }}
+      >
       {projects.map((project, idx) => (
         <motion.div
           key={project.id}
-          className="group relative p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-2xl transition-all overflow-hidden"
-          whileHover={{ scale: 1.05, y: -5 }}
+          className="group relative p-6 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg hover:shadow-2xl transition-all overflow-hidden"
+          whileHover={{ scale: 1.05, y: -8 }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -164,6 +180,7 @@ export default function ProjectsGrid() {
           </div>
         </motion.div>
       ))}
+      </motion.div>
     </motion.section>
   );
 }

@@ -2,7 +2,7 @@
 
 A production-ready, MAANG-level portfolio website built with Next.js 14, React 18, TypeScript, and Supabase. Features a modern, polished UI with professional animations, dark/light mode, and a comprehensive admin dashboard for content management.
 
-**Live Demo:** https://portfolio-demo.vercel.app
+**Live Demo:** 
 **Repository:** https://github.com/divyamsaraf/Portfolio-website
 
 ## ✨ Features

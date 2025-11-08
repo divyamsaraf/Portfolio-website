@@ -4,6 +4,15 @@ import { motion } from "framer-motion";
 import SocialLinks from "../SocialLinks";
 import type { Hero as HeroType } from "../../lib/types";
 
+const DEFAULT_ROLES = [
+  "Full Stack Developer",
+  "Backend Engineer",
+  "Software Architect",
+  "Cloud Engineer",
+  "DevOps Specialist",
+  "Open to SDE Roles (STEM OPT)",
+];
+
 const DEFAULT_HERO: HeroType = {
   title: "Divyam Saraf",
   subtitle: "Building scalable, maintainable systems with Java, Python, and modern React stacks. Open to SDE roles (STEM OPT).",
@@ -15,6 +24,8 @@ export default function Hero() {
   const [hero, setHero] = useState<HeroType>(DEFAULT_HERO);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+  const roles = (hero as any)?.roles || DEFAULT_ROLES;
 
   useEffect(() => {
     const fetchHero = async () => {
@@ -37,6 +48,14 @@ export default function Hero() {
     };
     fetchHero();
   }, []);
+
+  // Rotate roles every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [roles.length]);
 
   if (loading) {
     return (
@@ -86,13 +105,33 @@ export default function Hero() {
 
       <div className="relative z-10">
         <motion.h1
-          className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent"
+          className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
           {hero.title}
         </motion.h1>
+
+        {/* Rotating Roles */}
+        <motion.div
+          className="h-12 md:h-16 flex items-center justify-center mb-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          <motion.div
+            key={currentRoleIndex}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+          >
+            {roles[currentRoleIndex]}
+          </motion.div>
+        </motion.div>
+
         <motion.p
           className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mb-8 leading-relaxed"
           initial={{ opacity: 0, y: 20 }}

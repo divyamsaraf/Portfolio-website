@@ -41,21 +41,30 @@ Go to SQL Editor and run these queries:
 ```sql
 CREATE TABLE hero (
   id BIGSERIAL PRIMARY KEY,
-  title TEXT NOT NULL,
-  subtitle TEXT NOT NULL,
-  cta_github TEXT,
-  cta_resume TEXT,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
+  title VARCHAR(255) NOT NULL DEFAULT 'Divyam Saraf',
+  subtitle TEXT NOT NULL DEFAULT 'Building scalable, maintainable systems with Java, Python, and modern React stacks. Open to SDE roles (STEM OPT).',
+  roles TEXT[] DEFAULT ARRAY['Full Stack Developer', 'Backend Developer', 'Software Engineer', 'Cloud Architect', 'DevOps Engineer'],
+  cta_github VARCHAR(500) DEFAULT 'https://github.com/divyamsaraf',
+  cta_resume VARCHAR(500) DEFAULT 'https://example.com/resume.pdf',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO hero (title, subtitle, cta_github, cta_resume) VALUES (
+INSERT INTO hero (title, subtitle, roles, cta_github, cta_resume) VALUES (
   'Divyam Saraf',
   'Building scalable, maintainable systems with Java, Python, and modern React stacks. Open to SDE roles (STEM OPT).',
+  ARRAY['Full Stack Developer', 'Backend Developer', 'Software Engineer', 'Cloud Architect', 'DevOps Engineer'],
   'https://github.com/divyamsaraf',
   'https://example.com/resume.pdf'
 );
 ```
+
+**Fields:**
+- `title` - Your name (string)
+- `subtitle` - Main tagline/description (text)
+- `roles` - Array of rotating roles to display (text array)
+- `cta_github` - GitHub profile URL (string)
+- `cta_resume` - Resume download URL (string)
 
 ### About Table
 ```sql
@@ -114,18 +123,47 @@ INSERT INTO skills (name, category) VALUES
 ```sql
 CREATE TABLE projects (
   id BIGSERIAL PRIMARY KEY,
-  title TEXT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) UNIQUE NOT NULL,
   description TEXT NOT NULL,
   long_description TEXT,
-  tech_stack TEXT[] NOT NULL,
-  screenshot TEXT,
-  github_url TEXT,
-  live_url TEXT,
-  date TEXT,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
+  tech_stack TEXT[] DEFAULT ARRAY[],
+  tags TEXT[] DEFAULT ARRAY[],
+  github_url VARCHAR(500),
+  live_url VARCHAR(500),
+  screenshot VARCHAR(500),
+  featured BOOLEAN DEFAULT FALSE,
+  date DATE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Example insert
+INSERT INTO projects (title, slug, description, long_description, tech_stack, tags, github_url, featured, date) VALUES (
+  'RetailOps Pro',
+  'retailops-pro',
+  'Inventory & order management platform',
+  'Built microservices for inventory, orders and invoices with real-time updates',
+  ARRAY['Java', 'Spring Boot', 'AWS', 'React'],
+  ARRAY['Full Stack', 'Microservices'],
+  'https://github.com/divyamsaraf/retailops-pro',
+  TRUE,
+  '2023-06-15'
 );
 ```
+
+**Fields:**
+- `title` - Project name (string)
+- `slug` - URL-friendly identifier (string, unique)
+- `description` - Short description (text)
+- `long_description` - Detailed description (text)
+- `tech_stack` - Technologies used (text array)
+- `tags` - Project tags (text array)
+- `github_url` - GitHub repository link (string)
+- `live_url` - Live project URL (string)
+- `screenshot` - Project screenshot URL (string)
+- `featured` - Whether to feature on homepage (boolean)
+- `date` - Project completion date (date)
 
 ### Resume Table
 ```sql

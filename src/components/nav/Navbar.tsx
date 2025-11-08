@@ -69,17 +69,19 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
             {item.href.startsWith("/#") ? (
               <button
                 onClick={() => handleNavClick(item.href)}
-                className="relative group text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition font-medium cursor-pointer bg-none border-none"
+                className="relative group flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition font-medium cursor-pointer bg-none border-none"
               >
-                {item.label}
+                <span className="text-lg">{item.icon}</span>
+                <span className="hidden lg:inline">{item.label}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300" />
               </button>
             ) : (
               <Link
                 href={item.href}
-                className="relative group text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition font-medium"
+                className="relative group flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition font-medium"
               >
-                {item.label}
+                <span className="text-lg">{item.icon}</span>
+                <span className="hidden lg:inline">{item.label}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300" />
               </Link>
             )}
@@ -145,8 +147,9 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
                   handleNavClick(item.href);
                   setIsOpen(false);
                 }}
-                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition text-left bg-none border-none cursor-pointer"
+                className="px-4 py-2 flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition text-left bg-none border-none cursor-pointer"
               >
+                <span className="text-lg">{item.icon}</span>
                 {item.label}
               </button>
             ) : (
@@ -154,8 +157,9 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
+                className="px-4 py-2 flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
               >
+                <span className="text-lg">{item.icon}</span>
                 {item.label}
               </Link>
             )
