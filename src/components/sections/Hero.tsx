@@ -6,11 +6,9 @@ import type { Hero as HeroType } from "../../lib/types";
 
 const DEFAULT_ROLES = [
   "Full Stack Developer",
-  "Backend Engineer",
-  "Software Architect",
-  "Cloud Engineer",
-  "DevOps Specialist",
-  "Open to SDE Roles (STEM OPT)",
+  "Backend Developer",
+  "Software Engineer",
+  "Cloud Architect",
 ];
 
 const DEFAULT_COLLABORATION_ROLES = [
@@ -20,12 +18,30 @@ const DEFAULT_COLLABORATION_ROLES = [
 ];
 
 const DEFAULT_HERO: HeroType = {
-  title: "Divyam Saraf",
-  subtitle: "Building scalable, maintainable systems with Java, Python, and modern React stacks. Open to SDE roles (STEM OPT).",
+  title: "Divyam Saraf – Building Scalable & High-Performance Web Applications",
+  subtitle: "Full Stack Developer | Cloud Enthusiast | Problem Solver",
   roles: DEFAULT_ROLES,
   collaboration_roles: DEFAULT_COLLABORATION_ROLES,
   cta_github: "https://github.com/divyamsaraf",
   cta_resume: "https://example.com/resume.pdf",
+};
+
+// Typewriter effect component
+const TypewriterText = ({ text, speed = 50 }: { text: string; speed?: number }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayedText((prev) => prev + text[currentIndex]);
+        setCurrentIndex((prev) => prev + 1);
+      }, speed);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, text, speed]);
+
+  return <span>{displayedText}</span>;
 };
 
 export default function Hero() {
@@ -131,7 +147,7 @@ export default function Hero() {
           {hero.title}
         </motion.h1>
 
-        {/* Rotating Roles with Premium Styling */}
+        {/* Rotating Roles with Typewriter Effect */}
         <motion.div
           className="h-16 md:h-20 flex items-center justify-center mb-8"
           initial={{ opacity: 0 }}
@@ -146,7 +162,7 @@ export default function Hero() {
             transition={{ duration: 0.6 }}
             className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
           >
-            {roles[currentRoleIndex]}
+            <TypewriterText text={roles[currentRoleIndex]} speed={40} />
           </motion.div>
         </motion.div>
 

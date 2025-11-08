@@ -7,7 +7,7 @@ import ProjectsGrid from "../components/sections/ProjectsGrid";
 import EducationSection from "../components/sections/EducationSection";
 import SkillsSection from "../components/sections/SkillsSection";
 import ResumeSection from "../components/sections/ResumeSection";
-import ContactForm from "../components/ContactForm";
+import ContactSection from "../components/sections/ContactSection";
 import GoToTopButton from "../components/GoToTopButton";
 
 export default function Home() {
@@ -98,7 +98,12 @@ export default function Home() {
 
       {/* Contact Section */}
       <section id="contact" className="relative py-20 px-6 scroll-mt-20">
-        <ContactForm showTitle={true} />
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+            Get In Touch
+          </h2>
+          <ContactSection />
+        </div>
       </section>
 
       {/* Go to Top Button */}

@@ -43,9 +43,15 @@ ALTER TABLE hero ADD COLUMN IF NOT EXISTS collaboration_roles TEXT[] DEFAULT ARR
 CREATE TABLE IF NOT EXISTS about (
   id BIGSERIAL PRIMARY KEY,
   content TEXT NOT NULL,
+  personal_touch TEXT,
+  quotes TEXT[],
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Add new columns if they don't exist (for existing databases)
+ALTER TABLE about ADD COLUMN IF NOT EXISTS personal_touch TEXT;
+ALTER TABLE about ADD COLUMN IF NOT EXISTS quotes TEXT[];
 
 -- ============================================================================
 -- EXPERIENCE TABLE
@@ -139,6 +145,20 @@ CREATE TABLE IF NOT EXISTS resume (
 );
 
 -- ============================================================================
+-- CONTACT TABLE (NEW)
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS contact (
+  id BIGSERIAL PRIMARY KEY,
+  email TEXT NOT NULL,
+  phone TEXT,
+  linkedin VARCHAR(500),
+  github VARCHAR(500),
+  collaboration_text TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- ============================================================================
 
@@ -152,6 +172,7 @@ ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE education ENABLE ROW LEVEL SECURITY;
 ALTER TABLE collaboration ENABLE ROW LEVEL SECURITY;
 ALTER TABLE resume ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contact ENABLE ROW LEVEL SECURITY;
 
 -- Public read access for all content tables
 CREATE POLICY "public_read_hero" ON hero FOR SELECT USING (true);
@@ -162,6 +183,7 @@ CREATE POLICY "public_read_projects" ON projects FOR SELECT USING (true);
 CREATE POLICY "public_read_education" ON education FOR SELECT USING (true);
 CREATE POLICY "public_read_collaboration" ON collaboration FOR SELECT USING (true);
 CREATE POLICY "public_read_resume" ON resume FOR SELECT USING (true);
+CREATE POLICY "public_read_contact" ON contact FOR SELECT USING (true);
 
 -- Admin-only write access
 CREATE POLICY "admin_write_hero" ON hero FOR ALL USING (auth.email() IN (SELECT email FROM admin_users));
@@ -172,6 +194,7 @@ CREATE POLICY "admin_write_projects" ON projects FOR ALL USING (auth.email() IN 
 CREATE POLICY "admin_write_education" ON education FOR ALL USING (auth.email() IN (SELECT email FROM admin_users));
 CREATE POLICY "admin_write_collaboration" ON collaboration FOR ALL USING (auth.email() IN (SELECT email FROM admin_users));
 CREATE POLICY "admin_write_resume" ON resume FOR ALL USING (auth.email() IN (SELECT email FROM admin_users));
+CREATE POLICY "admin_write_contact" ON contact FOR ALL USING (auth.email() IN (SELECT email FROM admin_users));
 
 -- ============================================================================
 -- SAMPLE DATA (Optional - uncomment to use)

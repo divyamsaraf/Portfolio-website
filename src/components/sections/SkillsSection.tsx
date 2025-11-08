@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
-import SkillBadge from "./SkillBadge";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import type { Skill } from "../../lib/types";
+
+// Star rating component
+const StarRating = ({ rating }: { rating?: number }) => {
+  const stars = rating || 3;
+  return (
+    <div className="flex gap-1">
+      {[...Array(5)].map((_, i) => (
+        <span key={i} className={i < stars ? "text-yellow-400" : "text-gray-600"}>
+          ★
+        </span>
+      ))}
+    </div>
+  );
+};
 
 export default function SkillsSection() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -76,90 +88,82 @@ export default function SkillsSection() {
 
   const categories = Object.keys(skillsByCategory).sort();
 
-  const toggleCategory = (category: string) => {
-    const newExpanded = new Set(expandedCategories);
-    if (newExpanded.has(category)) {
-      newExpanded.delete(category);
-    } else {
-      newExpanded.add(category);
-    }
-    setExpandedCategories(newExpanded);
-  };
-
   return (
     <motion.section
-      className="max-w-5xl mx-auto px-4 space-y-4"
+      className="max-w-6xl mx-auto px-4 space-y-12"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
       {categories.map((category, categoryIdx) => {
-        const isExpanded = expandedCategories.has(category);
         const categorySkills = skillsByCategory[category];
 
         return (
           <motion.div
             key={category}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: categoryIdx * 0.05 }}
-            className="border border-gray-700/50 dark:border-gray-700/50 rounded-lg overflow-hidden hover:border-blue-500/50 transition-colors"
+            transition={{ delay: categoryIdx * 0.1 }}
           >
-            {/* Category Header - Collapsible */}
-            <motion.button
-              onClick={() => toggleCategory(category)}
-              className="w-full px-6 py-4 flex items-center justify-between bg-gradient-to-r from-gray-800/50 to-gray-900/50 hover:from-gray-700/50 hover:to-gray-800/50 transition-all"
-              whileHover={{ backgroundColor: "rgba(55, 65, 81, 0.3)" }}
+            {/* Category Header */}
+            <motion.div
+              className="flex items-center gap-3 mb-6"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: categoryIdx * 0.1 }}
             >
-              <div className="flex items-center gap-3">
-                <span className="w-1 h-5 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full" />
-                <h3 className="text-lg font-bold text-gray-100">
-                  {category}
-                </h3>
-                <span className="text-sm text-gray-400 ml-2">
-                  ({categorySkills.length})
-                </span>
-              </div>
-              <motion.div
-                animate={{ rotate: isExpanded ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-                className="text-gray-400"
-              >
-                ▼
-              </motion.div>
-            </motion.button>
+              <span className="w-1 h-8 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full" />
+              <h3 className="text-2xl font-bold text-gray-100">{category}</h3>
+              <span className="text-sm text-gray-400 ml-2">
+                ({categorySkills.length})
+              </span>
+            </motion.div>
 
-            {/* Category Content - Collapsible */}
-            <AnimatePresence>
-              {isExpanded && (
+            {/* Skills Grid - Always Visible */}
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: categoryIdx * 0.1 + 0.1 }}
+            >
+              {categorySkills.map((skill, skillIdx) => (
                 <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="px-6 py-4 bg-gray-900/30 border-t border-gray-700/50"
+                  key={skill.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: skillIdx * 0.05 }}
+                  whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(59, 130, 246, 0.2)" }}
+                  className="p-4 rounded-lg bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-blue-500/20 hover:border-blue-500/50 transition-all"
                 >
-                  <motion.div
-                    className="flex flex-wrap gap-3 justify-start"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.1 }}
-                  >
-                    {categorySkills.map((skill, skillIdx) => (
-                      <motion.div
-                        key={skill.id}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: skillIdx * 0.03 }}
-                      >
-                        <SkillBadge {...skill} />
-                      </motion.div>
-                    ))}
-                  </motion.div>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h4 className="text-lg font-semibold text-gray-100 mb-2">
+                        {skill.name}
+                      </h4>
+                      {skill.proficiency && (
+                        <StarRating rating={skill.proficiency} />
+                      )}
+                    </div>
+                    {skill.icon_url && (
+                      <img
+                        src={skill.icon_url}
+                        alt={skill.name}
+                        className="w-8 h-8 ml-2 flex-shrink-0"
+                      />
+                    )}
+                  </div>
+                  {skill.proficiency && (
+                    <div className="text-xs text-gray-400 mt-2">
+                      Proficiency: {skill.proficiency}/5
+                    </div>
+                  )}
                 </motion.div>
-              )}
-            </AnimatePresence>
+              ))}
+            </motion.div>
           </motion.div>
         );
       })}

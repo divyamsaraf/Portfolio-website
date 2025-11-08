@@ -25,6 +25,19 @@ export interface Hero {
 export interface About {
   id?: ID;
   content: string;
+  personal_touch?: string;
+  quotes?: string[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+// ============================================================================
+// QUOTE
+// ============================================================================
+export interface Quote {
+  id: ID;
+  text: string;
+  author: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -118,6 +131,20 @@ export interface Collaboration {
   type: "open_source" | "collaboration" | "project";
   link?: string;
   icon?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+// ============================================================================
+// CONTACT
+// ============================================================================
+export interface Contact {
+  id?: ID;
+  email: string;
+  phone?: string;
+  linkedin?: string;
+  github?: string;
+  collaboration_text?: string;
   created_at?: string;
   updated_at?: string;
 }
