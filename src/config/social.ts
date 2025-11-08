@@ -23,18 +23,18 @@ export const SOCIAL_LINKS: Record<string, SocialLink> = {
     icon: "linkedin",
     label: "Visit LinkedIn profile",
   },
-  email: {
-    name: "Email",
-    url: "mailto:divyam@example.com",
-    icon: "mail",
-    label: "Send an email",
-  },
-  twitter: {
-    name: "Twitter",
-    url: "https://twitter.com/divyamsaraf",
-    icon: "twitter",
-    label: "Visit Twitter profile",
-  },
+  // email: {
+  //   name: "Email",
+  //   url: "mailto:divyam@example.com",
+  //   icon: "mail",
+  //   label: "Send an email",
+  // },
+  // twitter: {
+  //   name: "Twitter",
+  //   url: "https://twitter.com/divyamsaraf",
+  //   icon: "twitter",
+  //   label: "Visit Twitter profile",
+  // },
 };
 
 export const PRIMARY_SOCIAL_LINKS = [

@@ -5,22 +5,22 @@ import ContactForm from "../ContactForm";
 import type { Contact } from "../../lib/types";
 
 const DEFAULT_CONTACT: Contact = {
-  email: "divyam@example.com",
-  phone: "+1 (555) 123-4567",
-  linkedin: "https://linkedin.com/in/divyamsaraf",
+  linkedin: "https://www.linkedin.com/in/divyam-saraf/",
   github: "https://github.com/divyamsaraf",
-  collaboration_text: "Open for Collaboration / Projects / Open Source Contribution",
+  collaboration_roles: [
+    "Open for Collaboration",
+    "Projects",
+    "Open Source Contribution",
+  ],
 };
 
 export default function ContactSection() {
   const [contact, setContact] = useState<Contact>(DEFAULT_CONTACT);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchContact = async () => {
       try {
-        setError(null);
         const { data, error: supabaseError } = await supabase
           .from("contact")
           .select("*")
@@ -33,7 +33,6 @@ export default function ContactSection() {
         }
       } catch (err) {
         console.error("Failed to fetch contact:", err);
-        setError("Failed to load contact section");
         setContact(DEFAULT_CONTACT);
       } finally {
         setLoading(false);
@@ -58,8 +57,8 @@ export default function ContactSection() {
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
     >
-      {/* Collaboration Text */}
-      {contact.collaboration_text && (
+      {/* Collaboration Roles */}
+      {contact.collaboration_roles && contact.collaboration_roles.length > 0 && (
         <motion.div
           className="mb-12 flex flex-wrap gap-3 justify-center"
           initial={{ opacity: 0, y: 20 }}
@@ -67,13 +66,13 @@ export default function ContactSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          {contact.collaboration_text.split(" / ").map((text, idx) => (
+          {contact.collaboration_roles.map((role, idx) => (
             <motion.span
               key={idx}
               className="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 text-cyan-300 text-sm font-medium backdrop-blur-sm"
               whileHover={{ scale: 1.05, borderColor: "rgba(34, 211, 238, 0.6)" }}
             >
-              ✨ {text.trim()}
+              ✨ {role}
             </motion.span>
           ))}
         </motion.div>
@@ -87,46 +86,6 @@ export default function ContactSection() {
         viewport={{ once: true }}
         transition={{ delay: 0.2 }}
       >
-        {/* Email */}
-        {contact.email && (
-          <motion.a
-            href={`mailto:${contact.email}`}
-            whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(59, 130, 246, 0.2)" }}
-            className="p-6 rounded-lg bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-blue-500/20 hover:border-blue-500/50 transition-all"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center">
-                <span className="text-2xl">✉️</span>
-              </div>
-              <div>
-                <p className="text-sm text-gray-400 mb-1">Email</p>
-                <p className="text-lg font-semibold text-gray-100 break-all">
-                  {contact.email}
-                </p>
-              </div>
-            </div>
-          </motion.a>
-        )}
-
-        {/* Phone */}
-        {contact.phone && (
-          <motion.a
-            href={`tel:${contact.phone}`}
-            whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(147, 51, 234, 0.2)" }}
-            className="p-6 rounded-lg bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center">
-                <span className="text-2xl">📱</span>
-              </div>
-              <div>
-                <p className="text-sm text-gray-400 mb-1">Phone</p>
-                <p className="text-lg font-semibold text-gray-100">{contact.phone}</p>
-              </div>
-            </div>
-          </motion.a>
-        )}
-
         {/* LinkedIn */}
         {contact.linkedin && (
           <motion.a

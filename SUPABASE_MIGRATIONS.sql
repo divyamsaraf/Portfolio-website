@@ -149,14 +149,18 @@ CREATE TABLE IF NOT EXISTS resume (
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS contact (
   id BIGSERIAL PRIMARY KEY,
-  email TEXT NOT NULL,
+  email TEXT,
   phone TEXT,
   linkedin VARCHAR(500),
   github VARCHAR(500),
   collaboration_text TEXT,
+  collaboration_roles TEXT[],
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Add collaboration_roles column if it doesn't exist (for existing databases)
+ALTER TABLE contact ADD COLUMN IF NOT EXISTS collaboration_roles TEXT[];
 
 -- ============================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES

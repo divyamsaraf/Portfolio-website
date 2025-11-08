@@ -140,11 +140,12 @@ export interface Collaboration {
 // ============================================================================
 export interface Contact {
   id?: ID;
-  email: string;
+  email?: string;
   phone?: string;
   linkedin?: string;
   github?: string;
   collaboration_text?: string;
+  collaboration_roles?: string[];
   created_at?: string;
   updated_at?: string;
 }
