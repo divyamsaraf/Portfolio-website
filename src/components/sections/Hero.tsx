@@ -49,11 +49,17 @@ export default function Hero() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+  const [currentCollaborationIndex, setCurrentCollaborationIndex] = useState(0);
 
   // Get roles from hero data, ensuring it's an array
   const roles = Array.isArray(hero?.roles) && hero.roles.length > 0
     ? hero.roles
     : DEFAULT_ROLES;
+
+  // Get collaboration roles from hero data, ensuring it's an array
+  const collaborationRoles = Array.isArray(hero?.collaboration_roles) && hero.collaboration_roles.length > 0
+    ? hero.collaboration_roles
+    : DEFAULT_COLLABORATION_ROLES;
 
   useEffect(() => {
     const fetchHero = async () => {
@@ -84,6 +90,14 @@ export default function Hero() {
     }, 3000);
     return () => clearInterval(interval);
   }, [roles.length]);
+
+  // Rotate collaboration roles every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentCollaborationIndex((prev) => (prev + 1) % collaborationRoles.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [collaborationRoles.length]);
 
   if (loading) {
     return (
@@ -176,23 +190,24 @@ export default function Hero() {
           {hero.subtitle}
         </motion.p>
 
-        {/* Collaboration Roles */}
-        {hero.collaboration_roles && hero.collaboration_roles.length > 0 && (
+        {/* Collaboration Roles with Typewriter Effect */}
+        {collaborationRoles && collaborationRoles.length > 0 && (
           <motion.div
-            className="mb-12 flex flex-wrap gap-3 justify-center"
+            className="h-12 md:h-14 flex items-center justify-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
-            {hero.collaboration_roles.map((role, idx) => (
-              <motion.span
-                key={idx}
-                className="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 text-cyan-300 text-sm font-medium backdrop-blur-sm"
-                whileHover={{ scale: 1.05, borderColor: "rgba(34, 211, 238, 0.6)" }}
-              >
-                ✨ {role}
-              </motion.span>
-            ))}
+            <motion.div
+              key={currentCollaborationIndex}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.6 }}
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 text-cyan-300 text-lg font-medium backdrop-blur-sm"
+            >
+              ✨ <TypewriterText text={collaborationRoles[currentCollaborationIndex]} speed={40} />
+            </motion.div>
           </motion.div>
         )}
 
