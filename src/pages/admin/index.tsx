@@ -73,7 +73,7 @@ export default function AdminDashboard() {
               className="mb-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
             >
               <p className="text-green-800 dark:text-green-200 text-sm">
-                ✓ Magic link sent! Check your email to sign in.
+                ✓ If that email is authorized, check your inbox for a magic link.
               </p>
             </motion.div>
           )}

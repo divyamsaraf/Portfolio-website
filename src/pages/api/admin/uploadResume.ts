@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { supabase } from "../../../lib/supabaseClient";
+import { getSupabaseAdmin } from "../../../lib/supabaseAdmin";
 import { requireAdminAuth } from "../../../lib/adminAuth";
 import formidable from "formidable";
 import fs from "fs";
@@ -32,7 +32,7 @@ export default async function handler(
     const fileBuffer = fs.readFileSync(file.filepath);
     const fileName = `resume_${Date.now()}.pdf`;
 
-    const { error: uploadError } = await supabase.storage
+    const { error: uploadError } = await getSupabaseAdmin().storage
       .from("resume")
       .upload(fileName, fileBuffer, { upsert: true });
 
@@ -40,10 +40,10 @@ export default async function handler(
       return res.status(500).json({ error: uploadError.message });
     }
 
-    const { data } = supabase.storage.from("resume").getPublicUrl(fileName);
+    const { data } = getSupabaseAdmin().storage.from("resume").getPublicUrl(fileName);
 
     // Update resume in database
-    await supabase.from("resume").upsert({
+    await getSupabaseAdmin().from("resume").upsert({
       file_url: data.publicUrl,
       file_name: fileName,
     });

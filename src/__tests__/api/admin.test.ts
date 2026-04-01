@@ -1,17 +1,17 @@
 import { createMocks } from 'node-mocks-http'
 import handler from '@/pages/api/admin/projects'
 
-jest.mock('@/lib/supabaseClient', () => ({
-  supabase: {
-    from: jest.fn(),
-  },
+const mockFrom = jest.fn()
+
+jest.mock('@/lib/supabaseAdmin', () => ({
+  getSupabaseAdmin: jest.fn(() => ({
+    from: mockFrom,
+  })),
 }))
 
 jest.mock('@/lib/adminAuth', () => ({
   requireAdminAuth: jest.fn().mockResolvedValue(true),
 }))
-
-import { supabase } from '@/lib/supabaseClient'
 import { requireAdminAuth } from '@/lib/adminAuth'
 
 describe('/api/admin/projects', () => {
@@ -26,7 +26,7 @@ describe('/api/admin/projects', () => {
         { id: 2, title: 'Project 2', description: 'Desc 2' },
       ]
 
-      ;(supabase.from as jest.Mock).mockReturnValue({
+      mockFrom.mockReturnValue({
         select: jest.fn().mockReturnValue({
           order: jest.fn().mockReturnValue({
             order: jest.fn().mockResolvedValue({
@@ -50,7 +50,7 @@ describe('/api/admin/projects', () => {
     it('should handle database errors', async () => {
       const mockError = { message: 'Database error' }
 
-      ;(supabase.from as jest.Mock).mockReturnValue({
+      mockFrom.mockReturnValue({
         select: jest.fn().mockReturnValue({
           order: jest.fn().mockReturnValue({
             order: jest.fn().mockResolvedValue({
@@ -78,7 +78,7 @@ describe('/api/admin/projects', () => {
         { title: 'New Project', description: 'New Desc' },
       ]
 
-      ;(supabase.from as jest.Mock).mockReturnValue({
+      mockFrom.mockReturnValue({
         delete: jest.fn().mockReturnValue({
           neq: jest.fn().mockResolvedValue({ error: null }),
         }),

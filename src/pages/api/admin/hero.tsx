@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { supabase } from "../../../lib/supabaseClient";
+import { getSupabaseAdmin } from "../../../lib/supabaseAdmin";
 import { requireAdminAuth } from "../../../lib/adminAuth";
 import type { Hero } from "../../../lib/types";
 
@@ -19,7 +19,7 @@ export default async function handler(
 
     switch (method) {
       case "GET":
-        const { data, error: getError } = await supabase
+        const { data, error: getError } = await getSupabaseAdmin()
           .from("hero")
           .select("*")
           .limit(1)
@@ -39,7 +39,7 @@ export default async function handler(
           return res.status(400).json({ error: "Title and subtitle are required" });
         }
 
-        const { data: inserted, error: insertError } = await supabase
+        const { data: inserted, error: insertError } = await getSupabaseAdmin()
           .from("hero")
           .upsert({ title, subtitle, cta_github, cta_resume })
           .select()

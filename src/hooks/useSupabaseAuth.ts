@@ -95,20 +95,31 @@ export function useSupabaseAuth() {
   const signInWithEmail = async (email: string, password: string) => {
     try {
       setError(null);
-      const { data, error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const response = await fetch("/api/admin/sign-in-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const json = (await response.json()) as { error?: string; access_token?: string; refresh_token?: string };
+
+      if (!response.ok) {
+        setError(json.error || "Sign in failed");
+        return false;
+      }
+
+      if (!json.access_token || !json.refresh_token) {
+        setError("Sign in failed");
+        return false;
+      }
+
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: json.access_token,
+        refresh_token: json.refresh_token,
       });
 
-      if (signInError) throw signInError;
-
-      if (data.user) {
-        const isAdmin = await checkAdminAccess(data.user.email || "");
-        if (!isAdmin) {
-          setError("Unauthorized: Admin access required");
-          await supabase.auth.signOut();
-          return false;
-        }
+      if (sessionError) {
+        setError(sessionError.message);
+        return false;
       }
 
       return true;
@@ -122,25 +133,21 @@ export function useSupabaseAuth() {
   const signInWithMagicLink = async (email: string) => {
     try {
       setError(null);
-
-      // Get the correct redirect URL from environment or window
-      const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL
-        ? `${process.env.NEXT_PUBLIC_SITE_URL}/admin`
-        : typeof window !== "undefined"
-          ? `${window.location.origin}/admin`
-          : "";
-
-      const { error: signInError } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: redirectUrl,
-        },
+      const response = await fetch("/api/admin/request-magic-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
+      const json = (await response.json()) as { error?: string; ok?: boolean };
 
-      if (signInError) throw signInError;
+      if (!response.ok) {
+        setError(json.error || "Magic link request failed");
+        return false;
+      }
+
       return true;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Magic link sign in failed";
+      const errorMessage = err instanceof Error ? err.message : "Magic link request failed";
       setError(errorMessage);
       return false;
     }

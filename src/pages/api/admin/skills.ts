@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { supabase } from "../../../lib/supabaseClient";
+import { getSupabaseAdmin } from "../../../lib/supabaseAdmin";
 import { requireAdminAuth } from "../../../lib/adminAuth";
 import type { Skill } from "../../../lib/types";
 
@@ -18,7 +18,7 @@ export default async function handler(
 
     switch (method) {
       case "GET":
-        const { data, error: getError } = await supabase
+        const { data, error: getError } = await getSupabaseAdmin()
           .from("skills")
           .select("*")
           .order("name", { ascending: true });
@@ -38,9 +38,9 @@ export default async function handler(
         }
 
         // Delete all existing skills and insert new ones
-        await supabase.from("skills").delete().neq("id", 0);
+        await getSupabaseAdmin().from("skills").delete().neq("id", 0);
 
-        const { data: inserted, error: insertError } = await supabase
+        const { data: inserted, error: insertError } = await getSupabaseAdmin()
           .from("skills")
           .insert(skills)
           .select();

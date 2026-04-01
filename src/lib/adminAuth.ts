@@ -1,40 +1,17 @@
-import { createClient } from "@supabase/supabase-js";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { isEmailRegisteredAsAdmin } from "./isAdminEmail";
+import { getSupabaseAdmin } from "./supabaseAdmin";
 
 /**
  * Server-side admin authentication utility
  * Used to verify admin access in API routes
  */
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_ROLE_KEY || ""
-);
-
 /**
- * Check if a user is an admin
- * @param email - User email to check
- * @returns true if user is admin, false otherwise
+ * Check if a user is an admin (same rules as login: row in admin_users, case-insensitive email).
  */
 export async function isAdminUser(email: string): Promise<boolean> {
-  try {
-    const { data, error } = await supabase
-      .from("admin_users")
-      .select("email, role")
-      .eq("email", email)
-      .eq("role", "ADMIN")
-      .single();
-
-    if (error) {
-      console.warn("Admin check failed:", error);
-      return false;
-    }
-
-    return !!data;
-  } catch (err) {
-    console.error("Error checking admin access:", err);
-    return false;
-  }
+  return isEmailRegisteredAsAdmin(email);
 }
 
 /**
@@ -49,7 +26,7 @@ export async function getUserFromToken(authHeader?: string) {
     }
 
     const token = authHeader.substring(7);
-    const { data, error } = await supabase.auth.getUser(token);
+    const { data, error } = await getSupabaseAdmin().auth.getUser(token);
 
     if (error || !data.user) {
       return null;

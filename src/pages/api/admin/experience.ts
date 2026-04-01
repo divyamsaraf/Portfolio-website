@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { supabase } from "../../../lib/supabaseClient";
+import { getSupabaseAdmin } from "../../../lib/supabaseAdmin";
 import { requireAdminAuth } from "../../../lib/adminAuth";
 import type { Experience } from "../../../lib/types";
 
@@ -18,7 +18,7 @@ export default async function handler(
 
     switch (method) {
       case "GET":
-        const { data, error: getError } = await supabase
+        const { data, error: getError } = await getSupabaseAdmin()
           .from("experience")
           .select("*")
           .order("start_date", { ascending: false });
@@ -38,9 +38,9 @@ export default async function handler(
         }
 
         // Delete all existing experiences and insert new ones
-        await supabase.from("experience").delete().neq("id", 0);
+        await getSupabaseAdmin().from("experience").delete().neq("id", 0);
 
-        const { data: inserted, error: insertError } = await supabase
+        const { data: inserted, error: insertError } = await getSupabaseAdmin()
           .from("experience")
           .insert(experiences)
           .select();

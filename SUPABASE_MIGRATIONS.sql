@@ -172,6 +172,16 @@ ALTER TABLE contact ADD COLUMN IF NOT EXISTS collaboration_roles TEXT[];
 
 -- Enable RLS on all tables
 ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
+
+-- Required for browser admin login: the client checks admin_users with the anon key + user JWT.
+-- Without this policy, SELECT is denied (RLS + no policy) and every login is treated as non-admin.
+-- Also fixes policies below that use subqueries to admin_users: users only see their own row in those subqueries.
+DROP POLICY IF EXISTS "admin_users_select_own_email" ON admin_users;
+CREATE POLICY "admin_users_select_own_email" ON admin_users
+  FOR SELECT
+  TO authenticated
+  USING (lower(trim(email)) = lower(trim(COALESCE((auth.jwt() ->> 'email')::text, ''))));
+
 ALTER TABLE hero ENABLE ROW LEVEL SECURITY;
 ALTER TABLE about ENABLE ROW LEVEL SECURITY;
 ALTER TABLE experience ENABLE ROW LEVEL SECURITY;
