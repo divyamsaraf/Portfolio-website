@@ -7,7 +7,12 @@ jest.mock('@/lib/supabaseClient', () => ({
   },
 }))
 
+jest.mock('@/lib/adminAuth', () => ({
+  requireAdminAuth: jest.fn().mockResolvedValue(true),
+}))
+
 import { supabase } from '@/lib/supabaseClient'
+import { requireAdminAuth } from '@/lib/adminAuth'
 
 describe('/api/admin/projects', () => {
   beforeEach(() => {
@@ -23,9 +28,11 @@ describe('/api/admin/projects', () => {
 
       ;(supabase.from as jest.Mock).mockReturnValue({
         select: jest.fn().mockReturnValue({
-          order: jest.fn().mockResolvedValue({
-            data: mockProjects,
-            error: null,
+          order: jest.fn().mockReturnValue({
+            order: jest.fn().mockResolvedValue({
+              data: mockProjects,
+              error: null,
+            }),
           }),
         }),
       })
@@ -45,9 +52,11 @@ describe('/api/admin/projects', () => {
 
       ;(supabase.from as jest.Mock).mockReturnValue({
         select: jest.fn().mockReturnValue({
-          order: jest.fn().mockResolvedValue({
-            data: null,
-            error: mockError,
+          order: jest.fn().mockReturnValue({
+            order: jest.fn().mockResolvedValue({
+              data: null,
+              error: mockError,
+            }),
           }),
         }),
       })
