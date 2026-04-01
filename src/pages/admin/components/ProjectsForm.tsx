@@ -199,15 +199,41 @@ export default function ProjectsForm() {
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={proj.featured || false}
-                onChange={(e) => handleChange(idx, "featured", e.target.checked)}
-                className="w-4 h-4"
-              />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Featured</span>
-            </label>
+            <div className="flex items-center gap-6">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={proj.featured || false}
+                  onChange={(e) => handleChange(idx, "featured", e.target.checked)}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Featured</span>
+              </label>
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Position:
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={proj.sort_order || 0}
+                  onChange={(e) => handleChange(idx, "sort_order", parseInt(e.target.value) || 0)}
+                  title="Lower numbers appear first (e.g. 1, 2, 3)"
+                  className="px-2 py-1 w-16 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Date:
+                </label>
+                <input
+                  type="date"
+                  value={proj.date || ""}
+                  onChange={(e) => handleChange(idx, "date", e.target.value)}
+                  className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                />
+              </div>
+            </div>
             <button
               onClick={() => handleDelete(idx)}
               className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 font-semibold transition"

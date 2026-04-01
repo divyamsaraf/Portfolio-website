@@ -89,6 +89,7 @@ export interface Project {
   screenshot?: string;
   featured?: boolean;
   date?: string;
+  sort_order?: number;
   created_at?: string;
   updated_at?: string;
 }

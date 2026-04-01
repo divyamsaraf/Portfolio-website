@@ -82,7 +82,7 @@ export default function Navbar() {
                 onClick={() => handleNavClick(item.href)}
                 className="relative group flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition font-medium cursor-pointer bg-none border-none"
               >
-                <span className="text-lg">{item.icon}</span>
+                <span className="text-base opacity-80">{item.icon}</span>
                 <span className="hidden lg:inline">{item.label}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300" />
               </button>
@@ -91,7 +91,7 @@ export default function Navbar() {
                 href={item.href}
                 className="relative group flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition font-medium"
               >
-                <span className="text-lg">{item.icon}</span>
+                <span className="text-base opacity-80">{item.icon}</span>
                 <span className="hidden lg:inline">{item.label}</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300" />
               </Link>
@@ -101,15 +101,18 @@ export default function Navbar() {
 
         <motion.div variants={itemVariants} className="flex items-center gap-4 pl-4 border-l border-gray-200 dark:border-gray-700">
           <SocialLinks size="md" />
+          <Link href="/admin" title="Admin Portal" className="text-gray-500 hover:text-blue-600 transition">
+            <span className="text-lg">⚙️</span>
+          </Link>
         </motion.div>
 
         <motion.div variants={itemVariants}>
-          <Link
-            href="/admin"
-            className="px-4 py-2 border-2 border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition font-semibold"
+          <button
+            onClick={() => handleNavClick("/#resume")}
+            className="px-5 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all font-semibold flex items-center gap-2"
           >
-            Admin
-          </Link>
+            <span className="text-base opacity-90">📄</span> Resume
+          </button>
         </motion.div>
       </motion.div>
 
@@ -158,12 +161,21 @@ export default function Navbar() {
               </Link>
             )
           ))}
+          <button
+            onClick={() => {
+              handleNavClick("/#resume");
+              setIsOpen(false);
+            }}
+            className="px-4 py-2 mt-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all font-semibold flex items-center gap-2 justify-center"
+          >
+            <span className="text-base opacity-90">📄</span> Resume
+          </button>
           <Link
             href="/admin"
             onClick={() => setIsOpen(false)}
-            className="px-4 py-2 border-2 border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition font-semibold"
+            className="px-4 py-2 mt-2 border-2 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium flex items-center gap-2 justify-center"
           >
-            Admin
+            <span className="text-base">⚙️</span> Admin Portal
           </Link>
         </div>
       </motion.div>

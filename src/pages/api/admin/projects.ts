@@ -21,6 +21,7 @@ export default async function handler(
         const { data, error: getError } = await supabase
           .from("projects")
           .select("*")
+          .order("sort_order", { ascending: true })
           .order("date", { ascending: false });
 
         if (getError) {

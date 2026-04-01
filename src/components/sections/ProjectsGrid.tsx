@@ -46,6 +46,7 @@ export default function ProjectsGrid() {
         const { data, error: supabaseError } = await supabase
           .from("projects")
           .select("*")
+          .order("sort_order", { ascending: true })
           .order("date", { ascending: false });
 
         if (supabaseError) {
@@ -86,21 +87,12 @@ export default function ProjectsGrid() {
   }
 
   return (
-    <motion.section
-      className="max-w-6xl mx-auto py-20 px-4"
+    <motion.div
+      className="w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <motion.h2
-        className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        Featured Projects
-      </motion.h2>
 
       <motion.div
         className="grid sm:grid-cols-2 md:grid-cols-3 gap-6"
@@ -275,6 +267,6 @@ export default function ProjectsGrid() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.section>
+    </motion.div>
   );
 }

@@ -68,7 +68,9 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-gray-200 dark:border-gray-700 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600 dark:text-gray-400">
-            <p>© {currentYear} {SITE_NAME}. All rights reserved.</p>
+            <p>
+              © {currentYear} {SITE_NAME}. All rights reserved. 
+            </p>
             <p className="mt-4 md:mt-0">
               Designed & built with{" "}
               <span className="text-red-500">❤️</span> using Next.js, React & TailwindCSS

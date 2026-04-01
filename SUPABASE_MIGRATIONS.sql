@@ -98,9 +98,13 @@ CREATE TABLE IF NOT EXISTS projects (
   screenshot VARCHAR(500),
   featured BOOLEAN DEFAULT FALSE,
   date DATE,
+  sort_order INTEGER DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Add sort_order column to existing databases
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS sort_order INTEGER DEFAULT 0;
 
 -- ============================================================================
 -- EDUCATION TABLE (NEW)

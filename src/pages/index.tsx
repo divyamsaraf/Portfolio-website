@@ -79,9 +79,14 @@ export default function Home() {
       {/* Skills Section */}
       <section id="skills" className="relative py-20 px-6 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-bold mb-12 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Skills
-          </h2>
+          <div className="flex flex-col items-center mb-12 text-center">
+            <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent mb-4">
+              Technical Skills
+            </h2>
+            <span className="text-blue-400 font-medium tracking-wide text-xl md:text-2xl">
+              What I work with
+            </span>
+          </div>
           <SkillsSection />
         </div>
       </section>

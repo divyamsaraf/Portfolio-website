@@ -17,14 +17,10 @@ export const SITE_AUTHOR = "Divyam Saraf";
 // NAVIGATION
 // ============================================================================
 export const NAV_ITEMS = [
-  { href: "/", label: "Home", icon: "🏠" },
   { href: "/#about", label: "About", icon: "👤" },
   { href: "/#experience", label: "Experience", icon: "💼" },
-  { href: "/#education", label: "Education", icon: "🎓" },
   { href: "/#skills", label: "Skills", icon: "🛠️" },
   { href: "/#projects", label: "Projects", icon: "📁" },
-  { href: "/#resume", label: "Resume", icon: "📄" },
-  { href: "/#contact", label: "Contact", icon: "✉️" },
 ] as const;
 
 // ============================================================================
